@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ExamPilot – AI Exam Prep That Builds Real Understanding</title>
+<style>
+:root{--bg:#f5f3ff;--cd:#fff;--tx:#1e1b3a;--mu:#64608a;--ac:#7c3aed;--ac2:#4f46e5;--bd:#e4e0f7;--ok:#16a34a;--no:#dc2626;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f0d24;--cd:#1a1738;--tx:#efedff;--mu:#a9a5d3;--ac:#a78bfa;--ac2:#818cf8;--bd:#2d2a57;--ok:#4ade80;--no:#f87171;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0f0d24;--cd:#1a1738;--tx:#efedff;--mu:#a9a5d3;--ac:#a78bfa;--ac2:#818cf8;--bd:#2d2a57;--ok:#4ade80;--no:#f87171;color-scheme:dark}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--tx);font:15px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+header{background:var(--cd);border-bottom:1px solid var(--bd);padding:12px 16px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.logo{width:40px;height:40px;border-radius:12px;background:linear-gradient(135deg,var(--ac),var(--ac2));display:grid;place-items:center;font-size:22px}
+header h1{margin:0;font-size:1.2rem}header small{color:var(--mu);display:block}
+.badge{margin-left:auto;font-size:.75rem;font-weight:700;padding:5px 10px;border-radius:99px;background:color-mix(in srgb,var(--mu) 18%,transparent)}.badge.on{background:color-mix(in srgb,var(--ok) 20%,transparent);color:var(--ok)}
+.tb{background:none;border:1px solid var(--bd);color:var(--tx);border-radius:99px;padding:5px 11px;cursor:pointer}
+nav{display:flex;gap:6px;padding:9px 12px;overflow-x:auto;background:var(--cd);border-bottom:1px solid var(--bd);position:sticky;top:env(safe-area-inset-top,0px);z-index:5}
+nav button{flex:none;border:0;background:none;color:var(--mu);padding:9px 14px;border-radius:12px;font:600 .9rem inherit;cursor:pointer}
+nav button.on{background:linear-gradient(135deg,var(--ac),var(--ac2));color:#fff}
+.ban{background:linear-gradient(90deg,#2e1065,#1e1b4b);color:#e9e5ff;padding:8px 16px;font-size:.8rem}
+main{max-width:860px;margin:0 auto;padding:16px 12px 40px}section{display:none}section.on{display:block}
+.card{background:var(--cd);border:1px solid var(--bd);border-radius:16px;padding:16px;margin-bottom:14px}
+h2{margin:0 0 6px;font-size:1.2rem}.mu{color:var(--mu);font-size:.88rem}
+input,textarea,select{width:100%;padding:10px 12px;border-radius:12px;border:1.5px solid var(--bd);background:var(--bg);color:var(--tx);font:inherit;margin-top:6px}
+textarea{min-height:76px;resize:vertical}
+.btn{background:linear-gradient(135deg,var(--ac),var(--ac2));color:#fff;border:0;border-radius:12px;padding:10px 16px;font:600 .95rem inherit;cursor:pointer;margin:8px 6px 0 0}
+.btn.alt{background:none;color:var(--ac);border:1.5px solid var(--ac)}.btn:disabled{opacity:.45;cursor:not-allowed}
+.row{display:flex;gap:8px;flex-wrap:wrap}.row>*{flex:1;min-width:140px}
+#cl{height:360px;overflow-y:auto;display:flex;flex-direction:column;gap:10px;padding:6px 2px}
+.b{max-width:88%;padding:10px 13px;border-radius:14px;white-space:pre-wrap;animation:f .25s}.b.me{align-self:flex-end;background:linear-gradient(135deg,var(--ac),var(--ac2));color:#fff}.b.ai{align-self:flex-start;background:var(--bg);border:1px solid var(--bd)}
+@keyframes f{from{opacity:0;transform:translateY(6px)}to{opacity:1}}
+.opt{display:block;width:100%;text-align:left;margin:7px 0;padding:11px 13px;border-radius:12px;border:1.5px solid var(--bd);background:var(--bg);color:var(--tx);font:inherit;cursor:pointer}
+.opt.sel{border-color:var(--ac)}.opt.ok{border-color:var(--ok)}.opt.no{border-color:var(--no)}
+.box{border-left:4px solid var(--ac);background:color-mix(in srgb,var(--ac) 10%,transparent);padding:10px 12px;border-radius:8px;margin-top:10px;white-space:pre-wrap}
+.pill{display:inline-block;padding:3px 10px;border-radius:99px;background:color-mix(in srgb,var(--ac) 18%,transparent);font-size:.78rem;font-weight:700;margin-right:6px}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px}.stat{text-align:center;padding:12px;border-radius:14px;background:var(--bg);border:1px solid var(--bd)}.stat b{display:block;font-size:1.6rem;color:var(--ac)}
+.bar{height:12px;border-radius:99px;background:var(--bd);overflow:hidden;margin-top:6px}.bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--ac),var(--ac2));transition:width .5s}
+.pq{border-top:1px solid var(--bd);padding-top:12px;margin-top:12px}
+</style></head><body>
+<header><div class="logo">🧭</div><div><h1>ExamPilot</h1><small>Built to challenge your mind, not replace it</small></div>
+<span class="badge" id="bd">AI connecting…</span><button class="tb" id="th">Theme</button></header>
+<nav id="nav"><button data-t="doubt" class="on">💬 Doubt Solver</button><button data-t="quiz">📝 Adaptive Quiz</button><button data-t="pyq">📚 PYQ &amp; Test Papers</button><button data-t="peer">👥 Peer Hub</button><button data-t="mon">❤️ Dependency Monitor</button></nav>
+<div class="ban"><b>Rigor protocol:</b> Guided mode gives hints first. Quiz answers need your reasoning. Full explanations are tracked in your monitor.</div>
+<main>
+<section id="doubt" class="on"><div class="card"><h2>Ask any doubt, any subject</h2>
+<div class="row"><div><span class="mu">Mode</span><select id="md"><option value="g">Guided: hints and questions first</option><option value="f">Full explanation (tracked)</option></select></div>
+<div><span class="mu">Subject (optional)</span><input id="sj" placeholder="e.g. DBMS, Physics, Economics"></div></div>
+<div id="cl"><div class="b ai">Hi! Ask me anything you are stuck on. In Guided mode I will first ask what you already know, then give hints. Include your attempt for faster help.</div></div>
+<textarea id="ci" placeholder="Type your question or your attempt…"></textarea>
+<button class="btn" id="cs">Send</button><button class="btn alt" id="cc">Clear chat</button>
+<p class="mu">AI can make mistakes. Verify important facts with your textbook or teacher.</p></div></section>
+
+<section id="quiz"><div class="card"><h2>Adaptive Friction Quiz</h2>
+<p class="mu">Type any topic. Questions are generated for you. Explain your choice before the answer is revealed. Difficulty adjusts after every round.</p>
+<input id="qt" placeholder="Topic, e.g. Process scheduling in OS"><button class="btn" id="qg">Generate 5 questions</button><span class="pill" id="ql"></span>
+<div id="qa"></div></div></section>
+
+<section id="pyq"><div class="card"><h2>PYQ &amp; Test Papers</h2>
+<p class="mu">Practice questions below are sample questions, not official university papers. Paste your own PYQs, or generate a mock paper for any subject. Write your answer and the AI examiner marks it.</p>
+<div class="row"><div><select id="ps"></select></div><div><input id="pm" placeholder="Generate a mock paper for… (any subject)"></div></div>
+<button class="btn" id="pb">Load bank</button><button class="btn alt" id="pg">Generate mock paper</button>
+<div class="row" style="margin-top:8px"><div style="flex:3"><input id="pc" placeholder="Paste your own PYQ question"></div><div style="flex:1"><input id="pn" type="number" value="5" min="1" max="20" aria-label="Marks"></div></div>
+<button class="btn alt" id="pa">Add my question</button><div id="pl"></div></div></section>
+
+<section id="peer"><div class="card"><h2>Peer Study Hub</h2>
+<p class="mu">Learning together builds deeper understanding. Get a group task and roles, run the timer, then let the AI review your notes.</p>
+<input id="gt" placeholder="Topic for your group"><button class="btn" id="gb">Create group round</button>
+<div id="go"></div><div id="gw" style="display:none"><div class="box" id="tm" style="font-size:1.4rem;font-weight:700">10:00</div>
+<button class="btn" id="ts">Start timer</button><textarea id="gn" placeholder="Group notes: what did you agree on? where did you disagree?"></textarea>
+<button class="btn alt" id="gr">AI review of our notes</button><div id="gx"></div></div></div></section>
+
+<section id="mon"><div class="card"><h2>AI Dependency Monitor</h2><div class="stats" id="st"></div>
+<h3>Cognitive score</h3><div class="bar"><i id="sc"></i></div><p class="mu" id="sm"></p>
+<button class="btn alt" id="rs">Reset my data</button><button class="btn" id="ex">Copy summary for faculty</button><span class="mu" id="em"></span>
+<p class="mu">Your data is stored only in this browser. Nothing is sent to a server except the text you submit to the AI.</p></div></section>
+</main>
+<script>
+var $=function(i){return document.getElementById(i)},ai=null,S={q:0,g:0,f:0,quiz:0,ok:0,pyq:0,grp:0};
+try{var s0=JSON.parse(localStorage.getItem("ep"));if(s0)S=s0}catch(e){}
+function sv(){try{localStorage.setItem("ep",JSON.stringify(S))}catch(e){}}
+function el(t,c,x){var d=document.createElement(t);if(c)d.className=c;if(x!=null)d.textContent=x;return d}
+var PROXY="/api/chat";
+function mk(){var f=async function(inp,o){var m=typeof inp=="string"?[{role:"user",content:inp}]:inp;var r=await fetch(PROXY,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({messages:m})});if(!r.ok)throw {code:"http_"+r.status};var d=await r.json();var t=d.text||"";if(o&&o.onText)o.onText({text:t});return {text:t}};
+f.json=async function(p,o){var r=await f(p+"\n\nReturn only valid JSON, no markdown fences.",o);return JSON.parse(r.text.replace(/```json|```/g,"").trim())};return f}
+if(PROXY){ai=mk();$("bd").textContent="AI connected";$("bd").className="badge on"}else $("bd").textContent="AI offline";
+function need(o){if(!ai){o.textContent="AI is not reachable. Check that the server is running and the API key is set.";return true}return false}
+function err(e){return "AI request failed ("+(e&&e.code?e.code:"error")+"). Please try again shortly."}
+document.querySelectorAll("nav button").forEach(function(b){b.onclick=function(){document.querySelectorAll("nav button,section").forEach(function(x){x.classList.remove("on")});b.classList.add("on");$(b.dataset.t).classList.add("on");if(b.dataset.t=="mon")mon()}});
+$("th").onclick=function(){var r=document.documentElement,d=r.dataset.theme=="dark"||(!r.dataset.theme&&matchMedia("(prefers-color-scheme:dark)").matches);r.dataset.theme=d?"light":"dark"};
+/* Doubt solver */
+var H=[];
+async function send(){var q=$("ci").value.trim();if(!q)return;var full=$("md").value=="f",sj=$("sj").value.trim();
+var b=el("div","b me",q);$("cl").appendChild(b);$("ci").value="";var d=el("div","b ai","Thinking…");$("cl").appendChild(d);$("cl").scrollTop=1e9;
+if(need(d))return;
+S.q++;if(full)S.f++;else S.g++;sv();
+var rule=(full?"FULL EXPLANATION MODE: give a clear, descriptive explanation that answers exactly the question asked, with one concrete example. No filler, no unrelated background, no repeated points. End with one short check question."
+:"GUIDED MODE: do not give the final answer. If the student shows no attempt, ask one probing question about what they already know. If they show an attempt, say what is right, correct what is wrong, then give one structural hint. Under 120 words.")+(sj?" Subject: "+sj+".":"")+" Reply in plain text without markdown symbols. If unsure of a fact, say so.\n\nStudent: "+q;
+var m=H.slice(-8).map(function(x){return {role:x.role,content:x.content}});m.push({role:"user",content:rule});
+$("cs").disabled=true;
+try{var r=await ai(m,{cache:false,onText:function(x){d.textContent=x.text;$("cl").scrollTop=1e9}});d.textContent=r.text;H.push({role:"user",content:q},{role:"assistant",content:r.text})}catch(e){d.textContent=err(e)}
+$("cs").disabled=false}
+$("cs").onclick=send;$("ci").onkeydown=function(e){if(e.key=="Enter"&&(e.ctrlKey||e.metaKey))send()};
+$("cc").onclick=function(){H=[];$("cl").innerHTML="";$("cl").appendChild(el("div","b ai","Chat cleared. Ask your next doubt."))};
+/* Quiz */
+var Z={lv:2,qs:[],i:0,sc:0,pk:null};
+$("ql").textContent="Level 2 of 3";
+$("qg").onclick=async function(){var t=$("qt").value.trim(),o=$("qa");if(t.length<3){o.textContent="Enter a topic first.";return}if(need(o))return;
+o.textContent="Generating questions…";$("qg").disabled=true;
+try{var v=await ai.json("Create 5 multiple-choice questions on: "+t+". Difficulty "+Z.lv+" on a scale of 1 (easy) to 3 (hard). Each question must test a different concept. Return only a JSON array of 5 objects with keys q (string), o (array of 4 strings), a (index 0-3 of the correct option), e (two-sentence explanation).",{cache:false});
+if(!Array.isArray(v)||!v.length)throw {code:"bad_format"};Z.qs=v;Z.i=0;Z.sc=0;qr()}catch(e){o.textContent=err(e)}$("qg").disabled=false};
+function qr(){var o=$("qa");o.innerHTML="";if(Z.i>=Z.qs.length){var up=Z.sc>=4,dn=Z.sc<=2;Z.lv=up?Math.min(3,Z.lv+1):dn?Math.max(1,Z.lv-1):Z.lv;$("ql").textContent="Level "+Z.lv+" of 3";
+o.appendChild(el("div","box","Round finished: "+Z.sc+" of "+Z.qs.length+" correct. "+(up?"Next round moves up a level.":dn?"Next round eases down a level to build your base.":"Next round stays at this level.")+" Press Generate to continue."));return}
+var q=Z.qs[Z.i];Z.pk=null;o.appendChild(el("h3",null,"Q"+(Z.i+1)+". "+q.q));var ob=el("div");
+q.o.forEach(function(t,i){var b=el("button","opt",t);b.onclick=function(){Z.pk=i;ob.querySelectorAll(".opt").forEach(function(x){x.classList.remove("sel")});b.classList.add("sel");wx.style.display="block"};ob.appendChild(b)});o.appendChild(ob);
+var wx=el("div");wx.style.display="none";var ta=el("textarea");ta.placeholder="Why did you choose this? (at least 15 characters)";var sb=el("button","btn","Submit and check");sb.disabled=true;
+ta.oninput=function(){sb.disabled=ta.value.trim().length<15};
+sb.onclick=function(){var ok=Z.pk==q.a;S.quiz++;if(ok){S.ok++;Z.sc++}sv();ob.querySelectorAll(".opt").forEach(function(b,i){b.disabled=true;if(i==q.a)b.classList.add("ok");else if(i==Z.pk)b.classList.add("no")});
+sb.disabled=true;ta.disabled=true;o.appendChild(el("div","box",(ok?"Correct. ":"Not quite. ")+q.e));var nx=el("button","btn",Z.i+1<Z.qs.length?"Next question":"Finish round");nx.onclick=function(){Z.i++;qr()};o.appendChild(nx)};
+wx.appendChild(ta);wx.appendChild(sb);o.appendChild(wx)}
+/* PYQ */
+var P={"Data Structures":[["Differentiate between a stack and a queue with one real-world use of each.",5,"LIFO vs FIFO; push/pop vs enqueue/dequeue; undo or call stack; ticket line or scheduling"],["Explain binary search and derive its time complexity.",5,"sorted input; halve range; T(n)=T(n/2)+1; O(log n)"]],
+"DBMS":[["What is normalization? Explain 1NF, 2NF and 3NF with an example.",10,"reduce redundancy; atomic values; partial dependency; transitive dependency; example table"],["Explain ACID properties of a transaction.",5,"atomicity; consistency; isolation; durability with meaning of each"]],
+"Operating Systems":[["Explain deadlock and the four necessary conditions.",5,"mutual exclusion; hold and wait; no preemption; circular wait"],["Compare FCFS and Round Robin scheduling.",5,"non-preemptive vs time quantum; convoy effect; response time; fairness"]]};
+Object.keys(P).forEach(function(k){var o=el("option",null,k);$("ps").appendChild(o)});
+function pr(list){var o=$("pl");o.innerHTML="";list.forEach(function(x,i){var d=el("div","pq");d.appendChild(el("span","pill",x[1]+" marks"));d.appendChild(el("b",null,x[0]));
+var ta=el("textarea");ta.placeholder="Write your answer as you would in the exam…";var b=el("button","btn","AI examiner: mark my answer"),out=el("div");
+b.onclick=async function(){if(ta.value.trim().length<20){out.textContent="Write a proper attempt first (at least a couple of lines).";return}if(need(out))return;
+out.className="box";out.textContent="Marking…";b.disabled=true;
+try{var r=await ai("You are a strict university examiner. Question ("+x[1]+" marks): "+x[0]+"\nExpected key points: "+(x[2]||"use your own knowledge")+"\nStudent answer: "+ta.value+"\n\nGive: Score X/"+x[1]+". Then what earned marks, what is missing, and one tip to improve. Plain text, under 130 words, only about this question.",{cache:false,onText:function(t){out.textContent=t.text}});out.textContent=r.text;S.pyq++;sv()}catch(e){out.textContent=err(e)}b.disabled=false};
+d.appendChild(ta);d.appendChild(b);d.appendChild(out);o.appendChild(d)})}
+var cur=[];function setp(l){cur=l;pr(l)}
+$("pb").onclick=function(){setp(P[$("ps").value])};
+$("pa").onclick=function(){var q=$("pc").value.trim();if(q.length<8)return;cur=cur.concat([[q,+$("pn").value||5,""]]);pr(cur);$("pc").value=""};
+$("pg").onclick=async function(){var s=$("pm").value.trim(),o=$("pl");if(s.length<2){o.textContent="Type a subject for the mock paper.";return}if(need(o))return;
+o.textContent="Generating mock paper…";$("pg").disabled=true;
+try{var v=await ai.json("Create a mock university exam paper for the subject: "+s+" with 6 different questions covering different units, mixing 2, 5 and 10 mark questions. Return only a JSON array of arrays [question string, marks number, short expected key points string].",{cache:false});
+if(!Array.isArray(v))throw {code:"bad_format"};setp(v)}catch(e){o.textContent=err(e)}$("pg").disabled=false};
+setp(P["Data Structures"]);
+/* Peer */
+var tmr=null,left=600;
+$("gb").onclick=async function(){var t=$("gt").value.trim(),o=$("go");if(t.length<3){o.textContent="Enter a topic.";return}if(need(o))return;o.className="box";o.textContent="Creating round…";
+var r=["Explainer","Challenger","Summarizer"].sort(function(){return Math.random()-.5});
+try{var x=await ai("Create one 10-minute group discussion task on the topic: "+t+" for 3 university students with roles "+r.join(", ")+". Give the task in two sentences, then one specific job for each role. Plain text, concise.",{cache:false});o.textContent=x.text;$("gw").style.display="block";S.grp++;sv()}catch(e){o.textContent=err(e)}};
+$("ts").onclick=function(){clearInterval(tmr);left=600;tmr=setInterval(function(){left--;$("tm").textContent=Math.floor(left/60)+":"+("0"+left%60).slice(-2);if(left<=0){clearInterval(tmr);$("tm").textContent="Time is up!"}},1000)};
+$("gr").onclick=async function(){var n=$("gn").value.trim(),o=$("gx");if(n.length<30){o.textContent="Write your group notes first.";return}if(need(o))return;o.className="box";o.textContent="Reviewing…";
+try{var x=await ai("A study group discussed: "+$("gt").value+". Their notes: "+n+"\nGive: what they got right, any misconceptions, and two follow-up questions. Plain text, under 120 words.",{cache:false});o.textContent=x.text}catch(e){o.textContent=err(e)}};
+/* Monitor */
+function score(){var w=S.g+S.quiz+S.pyq+S.grp;return w+S.f?Math.round(100*w/(w+S.f)):0}
+function mon(){var c=score();$("st").innerHTML=[["Doubts asked",S.q],["Guided",S.g],["Full answers",S.f],["Quiz answered",S.quiz],["PYQs attempted",S.pyq],["Group rounds",S.grp]].map(function(x){return '<div class="stat"><b>'+x[1]+"</b>"+x[0]+"</div>"}).join("");
+$("sc").style.width=c+"%";$("sm").textContent=!(S.q+S.quiz+S.pyq+S.grp)?"Start learning to see your score.":"Cognitive score "+c+"/100. "+(c>=70?"Strong: you are doing most of the thinking.":c>=40?"Balanced. Try Guided mode more often.":"High reliance on full answers. Attempt first, then ask.")}
+$("rs").onclick=function(){S={q:0,g:0,f:0,quiz:0,ok:0,pyq:0,grp:0};sv();mon()};
+$("ex").onclick=function(){var t="ExamPilot effort summary: "+S.q+" doubts ("+S.g+" guided, "+S.f+" full), "+S.quiz+" quiz answers with reasoning, "+S.pyq+" PYQs attempted, "+S.grp+" group rounds, score "+score()+"/100.";try{navigator.clipboard.writeText(t);$("em").textContent="Copied."}catch(e){$("em").textContent=t}};
+mon();
+</script></body></html>
