@@ -1188,7 +1188,12 @@ async function send(){
   $("cs").disabled = false;
 }
 $("cs").onclick = send;
-$("ci").onkeydown = function(e){ if (e.key == "Enter" && (e.ctrlKey || e.metaKey)) send(); };
+$("ci").onkeydown = function(e) {
+  if (e.key === "Enter" && !e.shiftKey) {
+    e.preventDefault(); // Prevents inserting an unwanted blank line
+    send();
+  }
+};
 $("cc").onclick = function(){ H = []; $("cl").innerHTML = ""; $("cl").appendChild(el("div", "b ai", "Session cleared. What's on your mind?")); };
 
 /* Peer Discussion / Six Thinking Hats Protocol */
