@@ -18,12 +18,12 @@
   --ok: #10b981;
   --no: #f43f5e;
   --warn: #f59e0b;
-  --card-bg: rgba(18, 14, 43, 0.85);
-  --clock-bg: rgba(15, 12, 35, 0.85);
+  --card-bg: rgba(18, 14, 43, 0.74);
+  --clock-bg: rgba(15, 12, 35, 0.72);
   --chip: rgba(139, 92, 246, 0.18);
   --input-bg: rgba(10, 8, 26, 0.7);
   --modal-bg: #151230;
-  --wp-brightness: 0.45;
+  --wp-brightness: 0.68;
   --wp-blur: 0px;
 }
 
@@ -40,7 +40,7 @@
   --ok: #059669;
   --no: #e11d48;
   --warn: #d97706;
-  --card-bg: rgba(255, 255, 255, 0.92);
+  --card-bg: rgba(255, 255, 255, 0.8);
   --clock-bg: rgba(245, 242, 255, 0.94);
   --chip: rgba(124, 58, 237, 0.12);
   --input-bg: rgba(255, 255, 255, 0.95);
@@ -70,18 +70,20 @@ body {
 }
 
 /* Dynamic Wallpaper Layer with smooth cross-fade */
-#bg-wallpaper {
+.wp {
   position: fixed;
   inset: 0;
-  z-index: -2;
+  z-index: -3;
+  opacity: 0;
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  transition: opacity 1s cubic-bezier(0.4, 0, 0.2, 1), filter 1s ease;
+  transition: opacity 1.4s cubic-bezier(0.4, 0, 0.2, 1), filter 1s ease;
   filter: brightness(var(--wp-brightness)) saturate(1.18) blur(var(--wp-blur));
   transform: scale(1.02);
 }
 
+@media (prefers-reduced-motion: reduce) { .wp { transition-duration: .01s; } }
 .bg-overlay {
   position: fixed;
   inset: 0;
@@ -90,13 +92,13 @@ body {
   background: 
     radial-gradient(circle at 10% 20%, rgba(139,92,246,0.18), transparent 50%),
     radial-gradient(circle at 90% 80%, rgba(99,102,241,0.18), transparent 50%),
-    linear-gradient(180deg, rgba(9,8,24,0.35) 0%, rgba(9,8,24,0.85) 100%);
+    linear-gradient(180deg, rgba(9,8,24,0.1) 0%, rgba(9,8,24,0.5) 100%);
 }
 [data-theme="light"] .bg-overlay {
   background: 
     radial-gradient(circle at 10% 20%, rgba(124,58,237,0.12), transparent 50%),
     radial-gradient(circle at 90% 80%, rgba(79,70,229,0.12), transparent 50%),
-    linear-gradient(180deg, rgba(248,246,255,0.4) 0%, rgba(248,246,255,0.88) 100%);
+    linear-gradient(180deg, rgba(248,246,255,0.15) 0%, rgba(248,246,255,0.6) 100%);
 }
 
 header {
@@ -463,12 +465,35 @@ textarea { min-height: 80px; resize: vertical; }
 .opt-btn.sel { border-color: var(--ac); background: var(--chip); }
 .opt-btn.ok { border-color: var(--ok); background: rgba(16, 185, 129, 0.15); }
 .opt-btn.no { border-color: var(--no); background: rgba(244, 63, 94, 0.15); }
+
+/* Live Hat Rooms */
+.table-wrap { overflow-x: auto; }
+.hat-chip { display: inline-flex; align-items: center; gap: 4px; padding: 3px 10px; border-radius: 99px; font-size: .78rem; font-weight: 700; border: 1.5px solid var(--bd); background: var(--chip); color: var(--tx); margin: 2px 4px 2px 0; }
+.hat-White { border-color: #e5e7eb; } .hat-Blue { border-color: #3b82f6; } .hat-Red { border-color: #ef4444; }
+.hat-Black { border-color: #6b7280; } .hat-Yellow { border-color: #facc15; } .hat-Green { border-color: #22c55e; }
+.rm-head { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 8px; }
+.rm-feed { height: 300px; overflow-y: auto; background: var(--input-bg); border: 1px solid var(--bd); border-radius: 12px; padding: 10px 12px; margin-top: 10px; }
+.rm-row { margin-bottom: 10px; }
+.rm-text { margin-top: 3px; white-space: pre-wrap; word-break: break-word; }
+.rm-sys { text-align: center; color: var(--mu); font-size: .8rem; font-style: italic; margin: 8px 0; }
+@media (max-width: 600px) {
+  header { flex-wrap: wrap; padding: 8px 12px; }
+  header small { display: none; }
+  .header-right { margin-left: auto; flex-wrap: wrap; justify-content: flex-end; }
+}
+/* Monitor evidence */
+.spark { display: flex; align-items: flex-end; gap: 4px; height: 64px; margin-top: 8px; }
+.spark i { flex: 1; min-height: 3px; border-radius: 4px 4px 0 0; background: linear-gradient(180deg, var(--ac), var(--ac2)); }
+details.how { margin-top: 10px; padding: 10px 14px; border: 1px solid var(--bd); border-radius: 12px; background: var(--input-bg); }
+details.how summary { cursor: pointer; font-weight: 600; }
+details.how p { margin: 8px 0 0; }
 </style>
 </head>
 <body>
 
 <!-- Dynamic Wallpaper Layer -->
-<div id="bg-wallpaper"></div>
+<div id="bg-wallpaper" class="wp"></div>
+<div id="bg-wallpaper-b" class="wp"></div>
 <div class="bg-overlay"></div>
 
 <header>
@@ -515,14 +540,14 @@ textarea { min-height: 80px; resize: vertical; }
 </nav>
 
 <div class="banner">
-  ⚡ <b>Critical Thinking Shield:</b> Socratic hints &amp; peer debate triggers prevent passive AI shortcuts and foster real understanding.
+  ⚡ <b>Critical Thinking Shield:</b> Guided hints &amp; peer debate prevent passive AI shortcuts and build real understanding.
 </div>
 
 <main>
   <!-- DOUBT SOLVER -->
   <section id="doubt" class="on">
     <div class="card">
-      <h2>Socratic Doubt Solver</h2>
+      <h2>Doubt Solver</h2>
       <p class="mu">Formulate your attempt. The AI will challenge your premises and give hints rather than doing the homework for you.</p>
       <div class="row">
         <div>
@@ -545,6 +570,7 @@ textarea { min-height: 80px; resize: vertical; }
         <button class="btn" id="cs">Send Query</button>
         <button class="btn alt" id="cc">Clear Session</button>
       </div>
+      <p class="mu" style="margin-top:10px">AI can make mistakes. Verify important facts with your textbook or teacher.</p>
     </div>
   </section>
 
@@ -566,7 +592,7 @@ textarea { min-height: 80px; resize: vertical; }
   <section id="pyq">
     <div class="card">
       <h2>PYQ &amp; University Test Papers (Any Subject)</h2>
-      <p class="mu">Type any subject or syllabus topic. AI will generate authentic past university-level exam questions (2, 5, 10 marks) or full test papers, which it will then mark with a strict examiner rubric.</p>
+      <p class="mu">Type any subject or syllabus topic. AI will generate practice questions in university exam style (2, 5, 10 marks) or full mock papers, which it then marks with a strict examiner rubric. These are AI-generated practice questions, not official past papers.</p>
       
       <div class="row">
         <div style="flex: 2;">
@@ -617,50 +643,69 @@ textarea { min-height: 80px; resize: vertical; }
       </div>
 
       <div class="peer-subnav">
-        <button class="active" onclick="switchPeerTab('lb')">🏆 Real Leaderboard</button>
-        <button onclick="switchPeerTab('disc')">💬 Peer Discussion &amp; Roles</button>
-        <button onclick="switchPeerTab('pqz')">⚔️ Peer Duel Quiz</button>
+        <button class="active" onclick="switchPeerTab('lb', this)">🏆 Shared Leaderboard</button>
+        <button onclick="switchPeerTab('disc', this)">💬 Live Hat Rooms</button>
+        <button onclick="switchPeerTab('pqz', this)">⚔️ Peer Duel Quiz</button>
       </div>
 
       <!-- 1. Live Leaderboard (Zero Dummy Entries) -->
       <div id="peer-lb" class="peer-panel active">
         <div style="display:flex; justify-content:space-between; align-items:center;">
           <div>
-            <b>Live Student Ranking</b>
-            <div class="mu">Ranks registered users based on Autonomous Thinking Ratio &amp; Peer Contributions.</div>
+            <b>Student Ranking</b>
+            <div class="mu">Shared by everyone using this site. Score = active-thinking points × autonomy ratio, so effort and quality both count. Only a display name is shown.</div>
           </div>
           <button class="btn alt" onclick="renderLeaderboard()">Refresh</button>
         </div>
-        <table class="lb-table">
+        <div class="table-wrap"><table class="lb-table">
           <thead>
             <tr>
               <th>Rank</th>
               <th>Student Name</th>
               <th>Autonomy Ratio</th>
-              <th>Peer Debates</th>
-              <th>Total Score</th>
+              <th>Rooms Joined</th>
+              <th>Score</th>
             </tr>
           </thead>
           <tbody id="lb-body">
             <!-- Dynamically populated from actual accounts -->
           </tbody>
-        </table>
+        </table></div>
+        <p class="mu" id="lb-note" style="margin-top:8px"></p>
       </div>
 
-      <!-- 2. Peer Discussion -->
+      <!-- 2. Live Hat Rooms -->
       <div id="peer-disc" class="peer-panel">
-        <b>Six Thinking Hats Group Protocol</b>
-        <p class="mu">Assign perspectives to avoid one-dimensional groupthink: Challenger (Black Hat), Optimist (Yellow Hat), and Synthesizer (Blue Hat).</p>
-        <div class="row">
-          <input id="gt" placeholder="Topic to debate (e.g. Will AI chatbots erode university critical thinking?)">
-          <button class="btn" id="gb" style="margin-top:6px">Start Group Protocol</button>
+        <b>Live Six Thinking Hats Room</b>
+        <p class="mu">Create a room, share the 5-letter code, and discuss together on different phones or laptops. Each member wears a hat. The host wears the Blue Hat and can rotate hats so everyone practises every perspective.</p>
+        <div id="rm-lobby">
+          <div class="row">
+            <div><span class="mu">Your display name</span><input id="rm-name" maxlength="30" placeholder="e.g. Aarav K."></div>
+            <div style="flex:2"><span class="mu">Topic to debate (to create a room)</span><input id="gt" maxlength="150" placeholder="e.g. Will AI chatbots erode university critical thinking?"></div>
+          </div>
+          <div style="margin-top:8px"><button class="btn" id="rm-create">Create room</button></div>
+          <div class="row" style="margin-top:14px; align-items:flex-end">
+            <div><span class="mu">Or join a friend's room with its code</span><input id="rm-code" maxlength="5" placeholder="e.g. K7M2Q" style="text-transform:uppercase"></div>
+            <button class="btn alt" id="rm-join" style="flex:none; min-width:130px">Join room</button>
+          </div>
+          <div id="rm-msg" class="mu" style="margin-top:8px"></div>
         </div>
-        <div id="go"></div>
-        <div id="gw" style="display:none; margin-top:14px">
-          <div class="box" id="tm" style="font-size:1.3rem; font-weight:800; text-align:center;">10:00</div>
-          <button class="btn" id="ts" style="margin-top:8px">Start Timer</button>
-          <textarea id="gn" style="margin-top:10px" placeholder="Peer Notes: What premise did the Challenger doubt? What was the consensus?"></textarea>
-          <button class="btn alt" id="gr" style="margin-top:8px">AI Peer Review of Notes</button>
+        <div id="rm-live" style="display:none">
+          <div class="rm-head">
+            <div><span class="pill" id="rm-codepill"></span> <b id="rm-topic"></b></div>
+            <div><button class="btn alt" id="rm-copy">Copy code</button> <button class="btn alt" id="rm-leave">Leave</button></div>
+          </div>
+          <div id="rm-members"></div>
+          <div class="box" id="rm-hatnote"></div>
+          <div class="rm-feed" id="rm-feed"></div>
+          <textarea id="rm-input" style="min-height:56px; margin-top:8px" placeholder="Speak from your hat's perspective. Enter sends, Shift+Enter adds a new line."></textarea>
+          <div style="margin-top:8px; display:flex; gap:8px; flex-wrap:wrap; align-items:center">
+            <button class="btn" id="rm-send">Send</button>
+            <button class="btn alt" id="rm-rotate">Rotate hats (host)</button>
+            <button class="btn alt" id="rm-review">AI review of this discussion</button>
+            <button class="btn alt" id="ts">Start 10-min timer</button><span class="pill" id="tm">10:00</span>
+          </div>
+          <div id="rm-err" class="mu" style="margin-top:6px"></div>
           <div id="gx"></div>
         </div>
       </div>
@@ -682,57 +727,66 @@ textarea { min-height: 80px; resize: vertical; }
   <section id="mon">
     <div class="card">
       <h2>AI Dependency &amp; Autonomy Monitor</h2>
-      <p class="mu">Evaluates whether you are utilizing AI as a cognitive partner or an intellectual crutch.</p>
+      <p class="mu">Shows whether you are using AI as a thinking partner or as a shortcut. It is a self-awareness tool, not a grade.</p>
       <div class="stats" id="st"></div>
-      <h3 style="margin-top:18px">Cognitive Autonomy Score</h3>
+      <h3 style="margin-top:18px">Autonomy ratio <span class="pill">heuristic</span></h3>
       <div class="bar"><i id="sc"></i></div>
       <p class="mu" id="sm" style="margin-top:8px"></p>
+      <details class="how">
+        <summary>How is this calculated, and what does it NOT show?</summary>
+        <p class="mu">Active-thinking points = guided questions × 1.5 + quiz answers × 1.2 (scaled by the AI-rated quality of your written reasoning) + exam answers marked × 2 + peer rooms × 2.5. Shortcut penalty = direct answers × 2. Autonomy ratio = points ÷ (points + penalty), kept between 10% and 100%. Leaderboard score = points × ratio ÷ 10.</p>
+        <p class="mu">The weights are our own design choices, not scientific constants, and reasoning ratings come from an AI model that can be wrong. This number describes how you use the tool. It does not prove how much you learned.</p>
+      </details>
+      <h3 style="margin-top:18px">Reasoning evidence</h3>
+      <p class="mu">Each quiz answer needs written reasoning, and the AI rates it from 1 to 5. If the tool builds thinking, these ratings should rise with practice.</p>
+      <div class="spark" id="tr-bars"></div>
+      <p class="mu" id="tr-msg" style="margin-top:8px"></p>
       <div style="margin-top:14px">
-        <button class="btn alt" id="rs">Reset Metrics</button>
-        <button class="btn" id="ex">Copy Faculty Verification Summary</button>
+        <button class="btn alt" id="rs">Reset my local metrics</button>
+        <button class="btn" id="ex">Copy faculty summary</button>
         <span class="mu" id="em" style="margin-left:8px"></span>
       </div>
+      <p class="mu" style="margin-top:12px">Your activity totals stay in this browser. If you join the leaderboard, only your display name and activity counters are stored on the server (no PRN, email or answers). You can delete that profile at any time.</p>
     </div>
   </section>
 </main>
 
-<!-- LOGIN / REGISTRATION & DELETE MODAL -->
+<!-- JOIN LEADERBOARD MODAL (display name only) -->
 <div class="modal-overlay" id="auth-modal">
   <div class="modal-window">
-    <h3 style="margin-top:0" id="auth-modal-title">Student Profile Management</h3>
-    <p class="mu" id="auth-modal-desc">Create or switch your account to track your scores, or permanently delete your profile.</p>
-    
-    <div id="auth-inputs">
-      <div>
-        <span class="mu">Full Name</span>
-        <input type="text" id="auth-name" placeholder="e.g. Madhav Khetan">
-      </div>
-      <div style="margin-top:8px">
-        <span class="mu">PRN / Student ID</span>
-        <input type="text" id="auth-prn" placeholder="e.g. 26070122113">
-      </div>
+    <h3 style="margin-top:0">Join the shared leaderboard</h3>
+    <p class="mu">Choose a display name. No PRN, email or password is needed or stored. The server keeps only your name and activity counters, and you can delete them at any time.</p>
+    <div>
+      <span class="mu">Display name</span>
+      <input type="text" id="auth-name" maxlength="30" placeholder="e.g. Aarav K.">
     </div>
-
-    <!-- Active Account Details & Delete option (visible if logged in) -->
-    <div id="auth-active-actions" style="margin-top:16px; display:none; border-top:1px solid var(--bd); padding-top:12px;">
+    <div id="auth-err" class="mu" style="color:var(--no); margin-top:8px"></div>
+    <p class="mu" style="font-size:.78rem">A private key stored in this browser proves the profile is yours. If you clear your browser data you will lose access to it.</p>
+    <div id="auth-active-actions" style="margin-top:12px; display:none; border-top:1px solid var(--bd); padding-top:12px;">
       <div style="display:flex; justify-content:space-between; align-items:center;">
-        <span class="mu" style="font-size:0.8rem">Manage Account:</span>
-        <button class="btn danger" onclick="deleteCurrentAccount()">🗑️ Delete Account</button>
+        <span class="mu" style="font-size:0.8rem">Remove my data from the server:</span>
+        <button class="btn danger" onclick="deleteCurrentAccount()">🗑️ Delete profile</button>
       </div>
     </div>
-
     <div style="margin-top:18px; display:flex; gap:8px; justify-content:flex-end;">
       <button class="btn alt" onclick="closeAuthModal()">Close</button>
-      <button class="btn" id="auth-submit-btn" onclick="saveUserAccount()">Save Profile</button>
+      <button class="btn" id="auth-submit-btn" onclick="saveUserAccount()">Save</button>
     </div>
   </div>
 </div>
 
 <script>
 /* =======================================================================
-   1000+ DYNAMIC WALLPAPER LIBRARY ENGINE (Cycles every 10s & on reload)
+   ENDLESS WALLPAPER ENGINE
+   - Generated art: every wallpaper is drawn fresh from a random seed, so it never repeats.
+   - Photos: your curated Unsplash set, random Picsum photos, and random NASA "Astronomy Picture of the Day" images.
+   - Any photo that fails to load is replaced by generated art, so the background never goes blank.
    ======================================================================= */
-var basePhotoIds = [
+var WP = { mode: "mix", every: 8000, timer: null, front: -1, busy: false, first: true, apod: [], apodOff: 0 };
+if (window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches) WP.every = 30000;
+var gid = function(i){ return document.getElementById(i); };
+
+var CURATED = [
   "1507842229451-7f01be8860ee", "1519681393784-d120267933ba", "1451187580459-43490279c0fa",
   "1513475382585-d06e58bcb0e0", "1497633762265-9d179a990aa6", "1524995997946-a1c2e315a42f",
   "1481627834876-b7833e8f5570", "1457369804613-52c61a468e7d", "1464822759023-fed622ff2c3b",
@@ -744,37 +798,266 @@ var basePhotoIds = [
   "1534972195531-a756b1126f24", "1507525428034-b723cf961d3e", "1518770660439-4636190af475"
 ];
 
-var wallpaperLibrary = [];
-(function buildLibrary(){
-  for (var i = 0; i < 1000; i++) {
-    var photoId = basePhotoIds[i % basePhotoIds.length];
-    var sig = 1000 + i;
-    var q = 80 + (i % 15);
-    wallpaperLibrary.push("https://images.unsplash.com/photo-" + photoId + "?auto=format&fit=crop&w=1920&q=" + q + "&sig=" + sig);
-  }
-})();
-
-var curWpIndex = Math.floor(Math.random() * wallpaperLibrary.length);
-function changeWallpaper() {
-  var bg = document.getElementById("bg-wallpaper");
-  if (!bg) return;
-  curWpIndex = (curWpIndex + 1) % wallpaperLibrary.length;
-  var nextImg = new Image();
-  nextImg.src = wallpaperLibrary[curWpIndex];
-  nextImg.onload = function() {
-    bg.style.opacity = "0.2";
-    setTimeout(function(){
-      bg.style.backgroundImage = "url('" + nextImg.src + "')";
-      bg.style.opacity = "1";
-    }, 400);
+/* seeded random generator: same seed = same picture */
+function rng(seed){
+  return function(){
+    seed |= 0; seed = seed + 0x6D2B79F5 | 0;
+    var t = Math.imul(seed ^ seed >>> 15, 1 | seed);
+    t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
+    return ((t ^ t >>> 14) >>> 0) / 4294967296;
   };
 }
 
-// 1. Initial wallpaper set
-changeWallpaper();
+/* Generated art: 5 styles x random colours, layout and shapes = effectively unlimited wallpapers */
+function makeArt(only){
+  var seed = (Math.random() * 4294967296) >>> 0, R = rng(seed), W = 1280, H = 720;
+  var c = document.createElement("canvas"); c.width = W; c.height = H;
+  var x = c.getContext("2d");
+  var fam = R();
+  var h = fam < 0.7 ? 235 + R() * 110 : 170 + R() * 50;   // indigo-to-magenta, or teal-to-blue
+  var hsl = function(hh, s, l, a){ return "hsla(" + Math.round(hh) + "," + s + "%," + l + "%," + (a == null ? 1 : a) + ")"; };
+  function base(){
+    var g = x.createLinearGradient(0, 0, W * 0.6, H);
+    g.addColorStop(0, hsl(h, 58, 22)); g.addColorStop(1, hsl(h + 30, 62, 11));
+    x.fillStyle = g; x.fillRect(0, 0, W, H);
+  }
+  function stars(n){
+    for (var i = 0; i < n; i++){
+      x.fillStyle = "rgba(255,255,255," + (0.15 + R() * 0.6) + ")";
+      x.fillRect(R() * W, R() * H, 1 + R() * 1.6, 1 + R() * 1.6);
+    }
+  }
+  function mesh(){
+    base(); x.globalCompositeOperation = "lighter";
+    var n = 6 + Math.floor(R() * 4);
+    for (var i = 0; i < n; i++){
+      var px = R() * W, py = R() * H, r = (0.25 + R() * 0.45) * W, hh = h + (R() - 0.5) * 90;
+      var g = x.createRadialGradient(px, py, 0, px, py, r);
+      g.addColorStop(0, hsl(hh, 85, 58, 0.75)); g.addColorStop(1, hsl(hh, 85, 45, 0));
+      x.fillStyle = g; x.fillRect(0, 0, W, H);
+    }
+    x.globalCompositeOperation = "source-over";
+  }
+  function aurora(){
+    base(); stars(140);
+    x.globalCompositeOperation = "lighter";
+    if ("filter" in x) x.filter = "blur(12px)";
+    var bands = 3 + Math.floor(R() * 3);
+    for (var b = 0; b < bands; b++){
+      var y0 = H * (0.25 + R() * 0.5), amp = 30 + R() * 90, f1 = 0.002 + R() * 0.004, f2 = 0.004 + R() * 0.006,
+          p1 = R() * 6.28, p2 = R() * 6.28, hh = h + (R() - 0.5) * 70, th = H * (0.12 + R() * 0.16), px;
+      var top = function(px){ return y0 + Math.sin(px * f1 + p1) * amp + Math.sin(px * f2 + p2) * amp * 0.5; };
+      x.beginPath();
+      for (px = 0; px <= W; px += 8){ var y = top(px); if (px === 0) x.moveTo(px, y); else x.lineTo(px, y); }
+      for (px = W; px >= 0; px -= 8) x.lineTo(px, top(px) + th);
+      x.closePath();
+      var g = x.createLinearGradient(0, y0 - amp * 1.5, 0, y0 + th + amp * 1.5);
+      g.addColorStop(0, hsl(hh, 85, 55, 0)); g.addColorStop(0.4, hsl(hh, 85, 55, 0.3)); g.addColorStop(1, hsl(hh, 85, 50, 0));
+      x.fillStyle = g; x.fill();
+    }
+    if ("filter" in x) x.filter = "none";
+    x.globalCompositeOperation = "source-over";
+  }
+  function net(){
+    base();
+    var n = 60 + Math.floor(R() * 50), pts = [], i, j;
+    for (i = 0; i < n; i++) pts.push([R() * W, R() * H, 0.8 + R() * 2.2]);
+    x.lineWidth = 1;
+    for (i = 0; i < n; i++) for (j = i + 1; j < n; j++){
+      var dx = pts[i][0] - pts[j][0], dy = pts[i][1] - pts[j][1], d = Math.sqrt(dx * dx + dy * dy);
+      if (d < 170){ x.strokeStyle = hsl(h, 70, 75, (1 - d / 170) * 0.6); x.beginPath(); x.moveTo(pts[i][0], pts[i][1]); x.lineTo(pts[j][0], pts[j][1]); x.stroke(); }
+    }
+    for (i = 0; i < n; i++){
+      var p = pts[i], g = x.createRadialGradient(p[0], p[1], 0, p[0], p[1], p[2] * 9);
+      g.addColorStop(0, hsl(h + 20, 80, 78, 0.8)); g.addColorStop(1, hsl(h + 20, 80, 70, 0));
+      x.fillStyle = g; x.fillRect(p[0] - p[2] * 9, p[1] - p[2] * 9, p[2] * 18, p[2] * 18);
+      x.fillStyle = hsl(h + 20, 90, 88, 0.95); x.beginPath(); x.arc(p[0], p[1], p[2], 0, 6.2832); x.fill();
+    }
+  }
+  function contour(){
+    base();
+    var lines = 26 + Math.floor(R() * 14), p = [R() * 6.28, R() * 6.28, R() * 6.28],
+        f = [0.0025 + R() * 0.002, 0.006 + R() * 0.003, 0.012 + R() * 0.004];
+    x.lineWidth = 2;
+    for (var l = 0; l < lines; l++){
+      var yb = (l / lines) * H * 1.2 - H * 0.1;
+      x.beginPath();
+      for (var px = 0; px <= W; px += 6){
+        var y = yb + Math.sin(px * f[0] + p[0] + l * 0.12) * 60 + Math.sin(px * f[1] + p[1] + l * 0.2) * 28 + Math.sin(px * f[2] + p[2]) * 10;
+        if (px === 0) x.moveTo(px, y); else x.lineTo(px, y);
+      }
+      x.strokeStyle = hsl(h + l * 3, 75, 74, 0.38 + 0.5 * (l / lines)); x.stroke();
+    }
+  }
+  function rings(){
+    base();
+    var cx = W * (0.2 + R() * 0.6), cy = H * (0.2 + R() * 0.6), n = 9 + Math.floor(R() * 8), i, r = 0;
+    var g = x.createRadialGradient(cx, cy, 0, cx, cy, W * 0.4);
+    g.addColorStop(0, hsl(h, 80, 55, 0.5)); g.addColorStop(1, hsl(h, 80, 45, 0));
+    x.fillStyle = g; x.fillRect(0, 0, W, H);
+    for (i = 0; i < n; i++){
+      r = 40 + i * (W * 0.06);
+      x.beginPath(); x.arc(cx, cy, r, 0, 6.2832);
+      x.setLineDash(R() < 0.4 ? [2, 10] : []); x.lineWidth = R() < 0.3 ? 4 : 1.2;
+      x.strokeStyle = hsl(h + i * 6, 75, 74, Math.max(0.14, 0.7 - i * 0.04)); x.stroke();
+    }
+    x.setLineDash([]); x.lineWidth = 1.5;
+    for (i = 0; i < 72; i++){
+      var an = i / 72 * 6.2832, l2 = i % 6 === 0 ? 22 : 10;
+      x.strokeStyle = hsl(h, 75, 78, 0.5);
+      x.beginPath(); x.moveTo(cx + Math.cos(an) * r, cy + Math.sin(an) * r); x.lineTo(cx + Math.cos(an) * (r + l2), cy + Math.sin(an) * (r + l2)); x.stroke();
+    }
+  }
+  function nebula(){
+    base(); x.globalCompositeOperation = "lighter";
+    for (var i = 0; i < 30; i++){
+      var px = W * (0.12 + R() * 0.76) + (R() - 0.5) * 200, py = H * (0.12 + R() * 0.76) + (R() - 0.5) * 120, r = 70 + R() * 190, hh = h + (R() - 0.5) * 120;
+      var g = x.createRadialGradient(px, py, 0, px, py, r);
+      g.addColorStop(0, hsl(hh, 80, 55, 0.2)); g.addColorStop(1, hsl(hh, 80, 45, 0));
+      x.fillStyle = g; x.fillRect(px - r, py - r, r * 2, r * 2);
+    }
+    x.globalCompositeOperation = "source-over"; stars(280);
+    for (i = 0; i < 12; i++){
+      var sx = R() * W, sy = R() * H, sg = x.createRadialGradient(sx, sy, 0, sx, sy, 16);
+      sg.addColorStop(0, "rgba(255,255,255,.95)"); sg.addColorStop(0.25, hsl(h, 80, 80, 0.5)); sg.addColorStop(1, hsl(h, 80, 70, 0));
+      x.fillStyle = sg; x.fillRect(sx - 16, sy - 16, 32, 32);
+    }
+  }
+  function bokeh(){
+    base(); x.globalCompositeOperation = "lighter";
+    var n = 40 + Math.floor(R() * 30);
+    for (var i = 0; i < n; i++){
+      var r = 14 + R() * 70, px = R() * W, py = R() * H, hh = h + (R() - 0.5) * 80;
+      x.beginPath(); x.arc(px, py, r, 0, 6.2832); x.fillStyle = hsl(hh, 85, 62, 0.06 + R() * 0.13); x.fill();
+      x.lineWidth = 1.5; x.strokeStyle = hsl(hh, 85, 78, 0.12 + R() * 0.25); x.stroke();
+    }
+    x.globalCompositeOperation = "source-over";
+  }
+  function mountains(){
+    var sh = R() < 0.4 ? 345 + R() * 45 : h, px, l;
+    var g = x.createLinearGradient(0, 0, 0, H * 0.78);
+    g.addColorStop(0, hsl(sh, 60, 16)); g.addColorStop(0.6, hsl(sh + 25, 75, 40)); g.addColorStop(1, hsl(sh + 55, 90, 62));
+    x.fillStyle = g; x.fillRect(0, 0, W, H);
+    var sx = W * (0.25 + R() * 0.5), sy = H * (0.5 + R() * 0.12), sg = x.createRadialGradient(sx, sy, 0, sx, sy, W * 0.3);
+    sg.addColorStop(0, hsl(sh + 60, 100, 88, 0.95)); sg.addColorStop(0.15, hsl(sh + 55, 95, 72, 0.5)); sg.addColorStop(1, hsl(sh + 55, 90, 60, 0));
+    x.fillStyle = sg; x.fillRect(0, 0, W, H); stars(50);
+    var layers = 4 + Math.floor(R() * 2);
+    for (l = 0; l < layers; l++){
+      var by = H * (0.55 + l * 0.1), amp = 50 + R() * 70 - l * 6, f1 = 0.004 + R() * 0.004, f2 = 0.011 + R() * 0.01, p1 = R() * 6.28, p2 = R() * 6.28;
+      x.beginPath(); x.moveTo(0, H);
+      for (px = 0; px <= W; px += 6) x.lineTo(px, by - (Math.abs(Math.sin(px * f1 + p1)) * amp + Math.sin(px * f2 + p2) * amp * 0.25));
+      x.lineTo(W, H); x.closePath();
+      x.fillStyle = hsl(sh + 30 - l * 5, 50, Math.max(4, 30 - l * 6)); x.fill();
+    }
+  }
+  function circuit(){
+    base(); x.lineCap = "round";
+    var n = 26 + Math.floor(R() * 14);
+    for (var i = 0; i < n; i++){
+      var px = Math.floor(R() * W / 40) * 40, py = Math.floor(R() * H / 40) * 40, segs = 3 + Math.floor(R() * 5);
+      x.lineWidth = 2; x.beginPath(); x.moveTo(px, py);
+      for (var k = 0; k < segs; k++){
+        var dir = Math.floor(R() * 4), len = 40 * (1 + Math.floor(R() * 4));
+        if (dir === 0) px += len; else if (dir === 1) px -= len; else if (dir === 2) py += len; else py -= len;
+        x.lineTo(px, py);
+      }
+      x.strokeStyle = hsl(h + R() * 40, 80, 70, 0.3 + R() * 0.3); x.stroke();
+      x.fillStyle = hsl(h + 20, 90, 82, 0.95); x.beginPath(); x.arc(px, py, 4 + R() * 3, 0, 6.2832); x.fill();
+      x.lineWidth = 1.5; x.strokeStyle = hsl(h + 20, 90, 82, 0.45); x.beginPath(); x.arc(px, py, 11, 0, 6.2832); x.stroke();
+    }
+  }
+  function mosaic(){
+    var cols = 14, rows = 8, cw = W / cols, ch = H / rows, pts = [], r, c2;
+    for (r = 0; r <= rows; r++){ pts[r] = []; for (c2 = 0; c2 <= cols; c2++){ var inner = r > 0 && r < rows && c2 > 0 && c2 < cols; pts[r][c2] = [c2 * cw + (inner ? (R() - 0.5) * cw * 0.8 : 0), r * ch + (inner ? (R() - 0.5) * ch * 0.8 : 0)]; } }
+    function tri(a, b, c, hh, l){ x.beginPath(); x.moveTo(a[0], a[1]); x.lineTo(b[0], b[1]); x.lineTo(c[0], c[1]); x.closePath(); x.fillStyle = hsl(hh, 62, l); x.fill(); x.strokeStyle = hsl(hh, 62, l + 6, 0.5); x.lineWidth = 0.8; x.stroke(); }
+    for (r = 0; r < rows; r++) for (c2 = 0; c2 < cols; c2++){
+      var hh = h + (c2 / cols) * 50 + (R() - 0.5) * 14, l = 22 + (1 - r / rows) * 12;
+      tri(pts[r][c2], pts[r][c2 + 1], pts[r + 1][c2 + 1], hh, l + R() * 14);
+      tri(pts[r][c2], pts[r + 1][c2 + 1], pts[r + 1][c2], hh + 8, l + R() * 14);
+    }
+  }
+  var styles = [mesh, aurora, net, contour, rings, nebula, bokeh, mountains, circuit, mosaic];
+  styles[only != null ? only : Math.floor(R() * styles.length)]();
+  x.globalAlpha = 0.75; x.globalCompositeOperation = "screen"; x.drawImage(c, 0, 0);   // lift the shadows so the art stays visible under the dark overlay
+  x.globalAlpha = 1; x.globalCompositeOperation = "source-over";
+  return c.toDataURL("image/jpeg", 0.85);
+}
 
-// 2. Automatically change every 10 seconds
-setInterval(changeWallpaper, 10000);
+/* NASA Astronomy Picture of the Day: a random batch of images (free demo key; limited per hour, so failures are handled quietly) */
+async function apodNext(){
+  if (!WP.apod.length){
+    var r = await fetch("https://api.nasa.gov/planetary/apod?api_key=DEMO_KEY&count=20");
+    if (!r.ok) throw new Error("apod " + r.status);
+    var a = await r.json();
+    WP.apod = a.filter(function(i){ return i.media_type === "image" && i.url; })
+               .map(function(i){ return i.url.replace(/^http:/, "https:"); });
+    if (!WP.apod.length) throw new Error("apod empty");
+  }
+  return WP.apod.pop();
+}
+
+function wpLoad(url){
+  return new Promise(function(ok, no){
+    var im = new Image(), t = setTimeout(function(){ im.src = ""; no(new Error("timeout")); }, 9000);
+    im.onload = function(){ clearTimeout(t); ok(); };
+    im.onerror = function(){ clearTimeout(t); no(new Error("load")); };
+    im.src = url;
+  });
+}
+
+function wpKind(){
+  var m = WP.mode, r = Math.random(), apodOk = Date.now() > WP.apodOff;
+  if (navigator.connection && navigator.connection.saveData) return "art";      // respect Data Saver
+  if (WP.first && (m === "mix" || m === "art" || m === "static")) return "art"; // first paint is instant
+  if (m === "art" || m === "static") return "art";
+  if (m === "space") return apodOk ? "apod" : "art";
+  if (m === "photos") return r < 0.55 ? "curated" : r < 0.85 ? "picsum" : (apodOk ? "apod" : "curated");
+  return r < 0.55 ? "art" : r < 0.67 ? "curated" : r < 0.82 ? (apodOk ? "apod" : "art") : "picsum";
+}
+
+async function wpUrl(kind){
+  if (kind === "curated") return "https://images.unsplash.com/photo-" + CURATED[Math.floor(Math.random() * CURATED.length)] + "?auto=format&fit=crop&w=1920&q=80";
+  if (kind === "picsum") return "https://picsum.photos/seed/ep" + Math.floor(Math.random() * 1e9) + "/1920/1080";
+  if (kind === "apod") return await apodNext();
+  return makeArt();
+}
+
+function wpShow(url){
+  var L = [gid("bg-wallpaper"), gid("bg-wallpaper-b")];
+  var inc = L[WP.front === 0 ? 1 : 0], out = WP.front < 0 ? null : L[WP.front];
+  inc.style.backgroundImage = "url('" + url + "')";
+  inc.style.zIndex = "-2";
+  if (out) out.style.zIndex = "-3";
+  void inc.offsetWidth;                       // make the browser register the new image before fading it in
+  inc.style.opacity = "1";
+  if (out) setTimeout(function(){ out.style.opacity = "0"; }, 1500);
+  WP.front = WP.front === 0 ? 1 : 0;
+}
+
+function wpSchedule(){
+  clearTimeout(WP.timer);
+  if (WP.mode === "static") return;
+  WP.timer = setTimeout(function(){ if (document.hidden) wpSchedule(); else wpNext(); }, WP.every);   // paused while the tab is hidden
+}
+
+async function wpNext(){
+  if (WP.busy) return;
+  WP.busy = true; clearTimeout(WP.timer);
+  var kind = wpKind(), url;
+  try {
+    url = await wpUrl(kind);
+    if (kind !== "art") await wpLoad(url);
+  } catch (e) {
+    if (kind === "apod") WP.apodOff = Date.now() + 30 * 60000;   // rest the NASA source for 30 minutes
+    url = makeArt();                                              // never leave the background empty
+  }
+  wpShow(url);
+  WP.first = false; WP.busy = false;
+  wpSchedule();
+}
+
+document.addEventListener("visibilitychange", function(){ if (!document.hidden && !WP.busy && WP.mode !== "static") wpSchedule(); });
+wpNext();
 
 
 /* =======================================================================
@@ -817,7 +1100,9 @@ function updateClockAndSolar() {
     body.classList.remove("solar-night");
     body.classList.add("solar-day");
     if (document.documentElement.dataset.theme !== "light") {
-      document.documentElement.style.setProperty('--wp-brightness', '0.52');
+      document.documentElement.style.setProperty('--wp-brightness', '0.74');
+    } else {
+      document.documentElement.style.removeProperty('--wp-brightness');
     }
   } else {
     solarTag.textContent = "🌙 Night Mode (" + hourVal + "h)";
@@ -825,7 +1110,9 @@ function updateClockAndSolar() {
     body.classList.remove("solar-day");
     body.classList.add("solar-night");
     if (document.documentElement.dataset.theme !== "light") {
-      document.documentElement.style.setProperty('--wp-brightness', '0.38');
+      document.documentElement.style.setProperty('--wp-brightness', '0.62');
+    } else {
+      document.documentElement.style.removeProperty('--wp-brightness');
     }
   }
 }
@@ -836,434 +1123,354 @@ updateClockAndSolar();
 
 
 /* =======================================================================
-   USER ACCOUNT SYSTEM: REGISTER, LOGIN, SWITCH & DELETE
-   ======================================================================= */
-var USERS_KEY = "ep_users";
-var CURRENT_USER_KEY = "ep_cur_user";
-
-function getAllUsers() {
-  try {
-    return JSON.parse(localStorage.getItem(USERS_KEY)) || {};
-  } catch(e) { return {}; }
-}
-function saveAllUsers(users) {
-  try { localStorage.setItem(USERS_KEY, JSON.stringify(users)); } catch(e){}
-}
-function getCurrentUser() {
-  try { return localStorage.getItem(CURRENT_USER_KEY) || null; } catch(e){ return null; }
-}
-function setCurrentUser(username) {
-  try {
-    if (username) localStorage.setItem(CURRENT_USER_KEY, username);
-    else localStorage.removeItem(CURRENT_USER_KEY);
-  } catch(e){}
-}
-
-function updateAuthUI() {
-  var curUser = getCurrentUser();
-  var users = getAllUsers();
-  var label = document.getElementById("user-btn-label");
-  var title = document.getElementById("auth-cur-name");
-  var sub = document.getElementById("auth-status-subtitle");
-  var actBtn = document.getElementById("auth-action-btn");
-  var actActions = document.getElementById("auth-active-actions");
-  
-  if (curUser && users[curUser]) {
-    var u = users[curUser];
-    label.textContent = u.name.split(" ")[0];
-    title.textContent = u.name + (u.prn ? " (" + u.prn + ")" : "");
-    var s = u.stats || {};
-    var w = (s.g || 0) * 1.5 + (s.quiz || 0) * 1.2 + (s.pyq || 0) * 2 + (s.grp || 0) * 2.5;
-    var pen = (s.f || 0) * 2.0;
-    var tot = w + pen;
-    var r = tot > 0 ? Math.min(100, Math.max(10, Math.round((w / tot) * 100))) : 85;
-    sub.textContent = "Autonomy Score: " + r + "% | Inquiries: " + (s.q || 0) + " | Debates: " + (u.debates || 0);
-    actBtn.textContent = "Switch / Manage Account";
-    actActions.style.display = "block";
-  } else {
-    label.textContent = "Sign In";
-    title.textContent = "Guest Student";
-    sub.textContent = "Create an account or login to track your score on the live leaderboard.";
-    actBtn.textContent = "Login / Register";
-    actActions.style.display = "none";
-  }
-}
-
-function openAuthModal() {
-  document.getElementById("auth-modal").classList.add("active");
-  var cur = getCurrentUser();
-  var users = getAllUsers();
-  if (cur && users[cur]) {
-    document.getElementById("auth-name").value = users[cur].name;
-    document.getElementById("auth-prn").value = users[cur].prn || "";
-    document.getElementById("auth-active-actions").style.display = "block";
-  } else {
-    document.getElementById("auth-name").value = "";
-    document.getElementById("auth-prn").value = "";
-    document.getElementById("auth-active-actions").style.display = "none";
-  }
-}
-function closeAuthModal() {
-  document.getElementById("auth-modal").classList.remove("active");
-}
-
-function saveUserAccount() {
-  var name = document.getElementById("auth-name").value.trim();
-  var prn = document.getElementById("auth-prn").value.trim();
-  if (name.length < 2) {
-    alert("Please enter a valid student name.");
-    return;
-  }
-  var users = getAllUsers();
-  var curId = prn || name.toLowerCase().replace(/\s+/g, "_");
-  
-  if (!users[curId]) {
-    users[curId] = {
-      name: name,
-      prn: prn,
-      stats: { q:0, g:0, f:0, quiz:0, ok:0, pyq:0, grp:0 },
-      score: 85,
-      debates: 0
-    };
-  } else {
-    users[curId].name = name;
-    if (prn) users[curId].prn = prn;
-  }
-  
-  saveAllUsers(users);
-  setCurrentUser(curId);
-  closeAuthModal();
-  updateAuthUI();
-  renderLeaderboard();
-  mon();
-}
-
-function deleteCurrentAccount() {
-  var cur = getCurrentUser();
-  if (!cur) return;
-  var users = getAllUsers();
-  var name = users[cur] ? users[cur].name : "this account";
-  
-  if (confirm("Are you sure you want to permanently delete " + name + "? This will erase your saved scores and remove your name from the leaderboard.")) {
-    delete users[cur];
-    saveAllUsers(users);
-    setCurrentUser(null);
-    closeAuthModal();
-    updateAuthUI();
-    renderLeaderboard();
-    mon();
-  }
-}
-
-function renderLeaderboard() {
-  var users = getAllUsers();
-  var tbody = document.getElementById("lb-body");
-  tbody.innerHTML = "";
-  
-  var list = Object.keys(users).map(function(k){
-    var u = users[k];
-    var s = u.stats || {};
-    var w = (s.g || 0) * 1.5 + (s.quiz || 0) * 1.2 + (s.pyq || 0) * 2 + (s.grp || 0) * 2.5;
-    var pen = (s.f || 0) * 2.0;
-    var tot = w + pen;
-    var ratio = tot > 0 ? Math.min(100, Math.max(10, Math.round((w / tot) * 100))) : 85;
-    var totalPts = ratio * 10 + (u.debates || s.grp || 0) * 25;
-    return {
-      id: k,
-      name: u.name,
-      prn: u.prn,
-      ratio: ratio + "%",
-      debates: u.debates || s.grp || 0,
-      totalPts: totalPts
-    };
-  });
-  
-  if (!list.length) {
-    tbody.innerHTML = "<tr><td colspan='5' class='empty-state'>No student profiles registered yet. Click 'Login / Register' to claim the #1 rank!</td></tr>";
-    return;
-  }
-  
-  list.sort(function(a, b){ return b.totalPts - a.totalPts; });
-  
-  var cur = getCurrentUser();
-  list.forEach(function(p, i){
-    var tr = document.createElement("tr");
-    var rankClass = i === 0 ? "rank-1" : i === 1 ? "rank-2" : i === 2 ? "rank-3" : "";
-    var isSelf = (p.id === cur);
-    if (isSelf) tr.style.background = "var(--chip)";
-    
-    tr.innerHTML = 
-      "<td class='lb-rank " + rankClass + "'>#" + (i + 1) + "</td>" +
-      "<td><b>" + p.name + "</b>" + (p.prn ? " <small class='mu'>(" + p.prn + ")</small>" : "") + (isSelf ? " <span class='pill'>You</span>" : "") + "</td>" +
-      "<td><span class='pill'>" + p.ratio + "</span></td>" +
-      "<td>" + p.debates + "</td>" +
-      "<td><b>" + p.totalPts + " pts</b></td>";
-    tbody.appendChild(tr);
-  });
-}
-
-document.getElementById("user-btn").onclick = openAuthModal;
-
-
-/* =======================================================================
-   SESSION STATE & PROXY AGENT LOGIC
+   BASICS
    ======================================================================= */
 var $ = function(i){ return document.getElementById(i); };
-var ai = null;
+var PROXY = "/api/chat", API = PROXY.replace(/\/chat$/, ""), ai = null;
+function el(t, c, x){ var d = document.createElement(t); if (c) d.className = c; if (x != null) d.textContent = x; return d; }
+function esc(t){ return String(t == null ? "" : t).replace(/[&<>"']/g, function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]; }); }
+function rnd(n){ var a = new Uint8Array(n); crypto.getRandomValues(a); return Array.prototype.map.call(a, function(b){ return ("0" + b.toString(16)).slice(-2); }).join(""); }
+try { ["ep_users", "ep_cur_user", "ep"].forEach(function(k){ localStorage.removeItem(k); }); } catch(e){}   // older versions stored PRNs in the browser: remove them
 
-function getActiveStats() {
-  var cur = getCurrentUser();
-  var users = getAllUsers();
-  if (cur && users[cur] && users[cur].stats) {
-    return users[cur].stats;
-  }
-  return { q:0, g:0, f:0, quiz:0, ok:0, pyq:0, grp:0 };
+async function api(path, body, method){
+  var r = await fetch(API + path, { method: method || "POST", headers: { "Content-Type": "application/json" }, body: body ? JSON.stringify(body) : undefined });
+  var j = {}; try { j = await r.json(); } catch(e){}
+  if (!r.ok) throw { code: "http_" + r.status, msg: typeof j.error == "string" ? j.error : null };
+  return j;
 }
 
-function updateActiveStats(mutator) {
-  var cur = getCurrentUser();
-  var users = getAllUsers();
-  if (cur && users[cur]) {
-    if (!users[cur].stats) users[cur].stats = { q:0, g:0, f:0, quiz:0, ok:0, pyq:0, grp:0 };
-    mutator(users[cur].stats, users[cur]);
-    saveAllUsers(users);
-  }
-  updateAuthUI();
+/* =======================================================================
+   YOUR IDENTITY + YOUR LOCAL STATS
+   uid/token are random and made in this browser. The server keeps only a hash of the token,
+   so nobody else can post as you. No PRN, email or password exists anywhere.
+   ======================================================================= */
+var ME_KEY = "ep_me2";
+function blankStats(){ return { q:0, g:0, f:0, quiz:0, ok:0, pyq:0, grp:0, rs:0, rn:0 }; }
+function loadMe(){
+  try {
+    var m = JSON.parse(localStorage.getItem(ME_KEY));
+    if (m && m.uid && m.token){ m.stats = Object.assign(blankStats(), m.stats || {}); m.hist = m.hist || []; m.rooms = m.rooms || []; return m; }
+  } catch(e){}
+  return { uid: rnd(8), token: rnd(24), name: "", dn: "", registered: false, stats: blankStats(), hist: [], rooms: [] };
+}
+var ME = loadMe();
+function saveMe(){ try { localStorage.setItem(ME_KEY, JSON.stringify(ME)); } catch(e){} }
+function bumpLocal(fn){ fn(ME.stats); saveMe(); if ($("mon").classList.contains("on")) mon(); }
+function profileCred(){ return ME.registered ? { id: ME.uid, token: ME.token } : null; }
+
+/* Same formula as the server. Points reward effort; the ratio rewards using hints over shortcuts. */
+function calc(s){
+  var qf = s.rn > 0 ? Math.max(0.2, (s.rs / s.rn) / 5) : 1;
+  var w = (s.g || 0) * 1.5 + (s.quiz || 0) * 1.2 * qf + (s.pyq || 0) * 2 + (s.grp || 0) * 2.5, pen = (s.f || 0) * 2, tot = w + pen;
+  var ratio = tot > 0 ? Math.min(100, Math.max(10, Math.round(w / tot * 100))) : null;
+  return { w: w, pen: pen, ratio: ratio, pts: ratio === null ? 0 : Math.round(w * ratio / 10) };
 }
 
-function el(t, c, x){
-  var d = document.createElement(t);
-  if (c) d.className = c;
-  if (x != null) d.textContent = x;
-  return d;
+/* =======================================================================
+   PROFILE (display name only) + SHARED LEADERBOARD
+   ======================================================================= */
+function updateAuthUI(){
+  $("user-btn-label").textContent = ME.registered ? ME.name : "Join leaderboard";
+  $("auth-cur-name").textContent = ME.registered ? ME.name : "Guest";
+  $("auth-status-subtitle").textContent = ME.registered
+    ? "You are on the shared leaderboard. It counts AI activity done while you are signed in."
+    : "Pick a display name to appear on the shared leaderboard. No PRN or email needed.";
+  $("auth-action-btn").textContent = ME.registered ? "Manage profile" : "Join leaderboard";
+  $("auth-active-actions").style.display = ME.registered ? "block" : "none";
 }
+function openAuthModal(){ $("auth-name").value = ME.name || ME.dn || ""; $("auth-err").textContent = ""; $("auth-modal").classList.add("active"); updateAuthUI(); }
+function closeAuthModal(){ $("auth-modal").classList.remove("active"); }
+async function saveUserAccount(){
+  var name = $("auth-name").value.trim();
+  if (name.length < 2){ $("auth-err").textContent = "Enter a display name of at least 2 characters."; return; }
+  $("auth-submit-btn").disabled = true;
+  try {
+    await api("/profile/register", { uid: ME.uid, token: ME.token, name: name });
+    ME.registered = true; ME.name = name; ME.dn = name; saveMe();
+    if (!$("rm-name").value.trim()) $("rm-name").value = name;
+    closeAuthModal(); updateAuthUI(); renderLeaderboard();
+  } catch(e){ $("auth-err").textContent = err(e); }
+  $("auth-submit-btn").disabled = false;
+}
+async function deleteCurrentAccount(){
+  if (!ME.registered) return;
+  if (!confirm("Delete your leaderboard profile? Your name and scores are erased from the server. Your local metrics stay in this browser.")) return;
+  try {
+    await api("/profile/delete", { uid: ME.uid, token: ME.token });
+    ME.registered = false; ME.name = ""; ME.uid = rnd(8); ME.token = rnd(24); saveMe();
+    closeAuthModal(); updateAuthUI(); renderLeaderboard();
+  } catch(e){ $("auth-err").textContent = err(e); }
+}
+function renderLeaderboard(){
+  var tb = $("lb-body");
+  return api("/leaderboard", null, "GET").then(function(d){
+    tb.innerHTML = "";
+    var rows = d.rows || [];
+    if (!rows.length){ var tr0 = el("tr"), td0 = el("td", "empty-state", "No one has joined yet. Join with a display name and take rank #1."); td0.colSpan = 5; tr0.appendChild(td0); tb.appendChild(tr0); }
+    rows.forEach(function(p, i){
+      var tr = el("tr"), me = ME.registered && p.id === ME.uid;
+      if (me) tr.style.background = "var(--chip)";
+      var c1 = el("td", "lb-rank " + (i < 3 ? "rank-" + (i + 1) : ""), "#" + (i + 1));
+      var c2 = el("td"); c2.appendChild(el("b", null, p.name)); if (me) c2.appendChild(el("span", "pill", "You"));
+      var c3 = el("td"); c3.appendChild(el("span", "pill", p.ratio === null ? "—" : p.ratio + "%"));
+      var c4 = el("td", null, String(p.rooms || 0));
+      var c5 = el("td"); c5.appendChild(el("b", null, p.pts + " pts"));
+      [c1, c2, c3, c4, c5].forEach(function(c){ tr.appendChild(c); }); tb.appendChild(tr);
+    });
+    $("lb-note").textContent = d.storage === "file"
+      ? "Note: this server keeps scores in a file that can reset when it restarts. Adding a free Upstash database makes them permanent."
+      : "Scores are stored in a database and survive restarts.";
+  }).catch(function(e){
+    tb.innerHTML = ""; var tr = el("tr"), td = el("td", "empty-state", err(e)); td.colSpan = 5; tr.appendChild(td); tb.appendChild(tr);
+  });
+}
+$("user-btn").onclick = openAuthModal;
 
-var PROXY = "/api/chat";
-
+/* =======================================================================
+   AI PROXY AGENT (streams text; sends your key so the server can count real activity)
+   ======================================================================= */
 function mk(){
   async function st(m, o){
-    var r = await fetch(PROXY + "/stream", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ messages: m })
-    });
-    if (!r.ok){
-      var j = {}; try { j = await r.json(); } catch(e){}
-      throw { code: "http_" + r.status, msg: j.error, soft: r.status == 404 };
-    }
+    var r = await fetch(PROXY + "/stream", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ messages: m, profile: profileCred(), kind: o.kind }) });
+    if (!r.ok){ var j = {}; try { j = await r.json(); } catch(e){} throw { code: "http_" + r.status, msg: j.error, soft: r.status == 404 }; }
     var rd = r.body.getReader(), dc = new TextDecoder(), buf = "", txt = "";
     for(;;){
-      var x = await rd.read();
-      if (x.done) break;
+      var x = await rd.read(); if (x.done) break;
       buf += dc.decode(x.value, { stream: true });
       var i;
       while ((i = buf.indexOf("\n")) >= 0){
-        var ln = buf.slice(0, i).trim();
-        buf = buf.slice(i + 1);
+        var ln = buf.slice(0, i).trim(); buf = buf.slice(i + 1);
         if (ln.indexOf("data:") != 0) continue;
         var d; try { d = JSON.parse(ln.slice(5)); } catch(e){ continue; }
         if (d.t){ txt += d.t; o.onText({ text: txt }); }
-        else if (d.error){
-          if (!txt) throw { code: "stream", msg: d.error, soft: true };
-          throw { code: "http_" + (d.status || 500), msg: d.error };
-        }
+        else if (d.error){ if (!txt) throw { code: "stream", msg: d.error, soft: true }; throw { code: "http_" + (d.status || 500), msg: d.error }; }
       }
     }
     if (!txt) throw { code: "stream", soft: true };
     return { text: txt };
   }
-
   var f = async function(inp, o){
     o = o || {};
     var m = typeof inp == "string" ? [{ role: "user", content: inp }] : inp;
-    if (o.onText && !o.json){
-      try { return await st(m, o); } catch(e){ if (e && e.code && !e.soft) throw e; }
-    }
-    var r = await fetch(PROXY, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ messages: m, json: !!o.json })
-    });
-    if (!r.ok){
-      var j = {}; try { j = await r.json(); } catch(e){}
-      throw { code: "http_" + r.status, msg: typeof j.error == "string" ? j.error : null };
-    }
-    var d = await r.json();
-    var t = d.text || "";
+    if (o.onText && !o.json){ try { return await st(m, o); } catch(e){ if (e && e.code && !e.soft) throw e; } }
+    var r = await fetch(PROXY, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ messages: m, json: !!o.json, profile: profileCred(), kind: o.kind }) });
+    if (!r.ok){ var j = {}; try { j = await r.json(); } catch(e){} throw { code: "http_" + r.status, msg: typeof j.error == "string" ? j.error : null }; }
+    var d = await r.json(); var t = d.text || "";
     if (o.onText) o.onText({ text: t });
     return { text: t };
   };
-
   f.json = async function(p, o){
     var r = await f(p + "\n\nReturn only valid JSON, no markdown fences.", Object.assign({}, o, { json: true, onText: null }));
     return JSON.parse(r.text.replace(/```json|```/g, "").trim());
   };
   return f;
 }
+ai = mk();
+$("bd").textContent = "Connecting…";
+fetch("/health").then(function(r){ if (!r.ok) throw 0; return r.json(); })
+  .then(function(){ $("bd").textContent = "AI Online"; $("bd").className = "badge on"; })
+  .catch(function(){ $("bd").textContent = "Offline / Standby"; });
 
-if (PROXY){
-  ai = mk();
-  $("bd").textContent = "Connecting…";
-  fetch(PROXY.replace(/\/api\/chat$/, "") + "/health")
-    .then(function(r){ if (!r.ok) throw 0; return r.json(); })
-    .then(function(){ $("bd").textContent = "AI Online"; $("bd").className = "badge on"; })
-    .catch(function(){ $("bd").textContent = "Offline / Standby"; });
-} else {
-  $("bd").textContent = "AI offline";
-}
-
-function need(o){
-  if (!ai){
-    o.textContent = "AI is not reachable. Ensure Render server environment variables are set.";
-    return true;
-  }
-  return false;
-}
-
+function need(o){ if (!ai){ o.textContent = "AI is not reachable. Ensure Render server environment variables are set."; return true; } return false; }
 function err(e){
   if (e && e.msg) return e.msg;
+  if (e && e.code == "http_404") return "The server does not have this feature yet. Redeploy the latest server.js on Render, then open /health: it should list \"storage\".";
   if (e instanceof SyntaxError || (e && e.code == "bad_format")) return "The model returned an unstructured format. Please try again.";
   return "Request failed (" + (e && e.code ? e.code : "error") + "). Please retry.";
 }
 
-/* Nav Router */
+/* Navigation */
 document.querySelectorAll("nav button").forEach(function(b){
   b.onclick = function(){
     document.querySelectorAll("nav button, section").forEach(function(x){ x.classList.remove("on"); });
-    b.classList.add("on");
-    $(b.dataset.t).classList.add("on");
+    b.classList.add("on"); $(b.dataset.t).classList.add("on");
     if (b.dataset.t == "mon") mon();
     if (b.dataset.t == "peer") renderLeaderboard();
   };
 });
-
-/* Theme Switcher - with deep visibility synchronization */
 $("th").onclick = function(){
   var r = document.documentElement;
-  var isDark = r.dataset.theme !== "light";
-  r.dataset.theme = isDark ? "light" : "dark";
+  r.dataset.theme = r.dataset.theme !== "light" ? "light" : "dark";
   updateClockAndSolar();
 };
-
-/* Peer Hub Sub Tabs */
-function switchPeerTab(tab){
+function switchPeerTab(tab, btn){
   document.querySelectorAll(".peer-subnav button").forEach(function(b){ b.classList.remove("active"); });
   document.querySelectorAll(".peer-panel").forEach(function(p){ p.classList.remove("active"); });
-  event.target.classList.add("active");
+  if (btn) btn.classList.add("active");
   $("peer-" + tab).classList.add("active");
 }
 
-/* Doubt Solver */
+/* =======================================================================
+   DOUBT SOLVER
+   ======================================================================= */
 var H = [];
 async function send(){
   var q = $("ci").value.trim();
   if (!q) return;
   var full = $("md").value == "f", sj = $("sj").value.trim();
-  $("cl").appendChild(el("div", "b me", q));
-  $("ci").value = "";
-  var d = el("div", "b ai", "Analyzing argument...");
-  $("cl").appendChild(d);
-  $("cl").scrollTop = 1e9;
+  $("cl").appendChild(el("div", "b me", q)); $("ci").value = "";
+  var d = el("div", "b ai", "Analyzing argument..."); $("cl").appendChild(d); $("cl").scrollTop = 1e9;
   if (need(d)) return;
-
-  updateActiveStats(function(s){
-    s.q++;
-    if (full) s.f++; else s.g++;
-  });
-
   var rule = (full
     ? "FULL MODE: Give a structured conceptual breakdown with 1 real-world counter-example. Prompt the student to defend against the counter-example."
-    : "SOCRATIC GUIDED MODE: Do not directly solve the question. Ask what assumptions the student is making, point out one potential logical flaw, and provide one structural hint. Keep under 110 words.") +
-    (sj ? " Subject: " + sj + "." : "") + " Return plain text without formatting symbols.\n\nQuery: " + q;
-
+    : "GUIDED MODE: Do not directly solve the question. Ask what assumptions the student is making, point out one potential logical flaw, and provide one structural hint. Keep under 110 words.") +
+    (sj ? " Subject: " + sj + "." : "") + " Return plain text without formatting symbols. If unsure of a fact, say so.\n\nQuery: " + q;
   var m = H.slice(-6).map(function(x){ return { role: x.role, content: x.content }; });
   m.push({ role: "user", content: rule });
   $("cs").disabled = true;
-
   try {
-    var r = await ai(m, { cache: false, onText: function(x){ d.textContent = x.text; $("cl").scrollTop = 1e9; } });
+    var r = await ai(m, { cache: false, kind: full ? "full" : "guided", onText: function(x){ d.textContent = x.text; $("cl").scrollTop = 1e9; } });
     d.textContent = r.text;
     H.push({ role: "user", content: q }, { role: "assistant", content: r.text });
+    bumpLocal(function(s){ s.q++; if (full) s.f++; else s.g++; });
   } catch(e){ d.textContent = err(e); }
   $("cs").disabled = false;
 }
 $("cs").onclick = send;
-$("ci").onkeydown = function(e) {
-  if (e.key === "Enter" && !e.shiftKey) {
-    e.preventDefault(); // Prevents inserting an unwanted blank line
-    send();
-  }
-};
+$("ci").onkeydown = function(e){ if (e.key === "Enter" && !e.shiftKey){ e.preventDefault(); send(); } };
 $("cc").onclick = function(){ H = []; $("cl").innerHTML = ""; $("cl").appendChild(el("div", "b ai", "Session cleared. What's on your mind?")); };
 
-/* Peer Discussion / Six Thinking Hats Protocol */
-var tmr = null, left = 600;
-$("gb").onclick = async function(){
-  var t = $("gt").value.trim(), o = $("go");
-  if (t.length < 3){ o.textContent = "Please enter a topic to debate."; return; }
+/* =======================================================================
+   LIVE PEER ROOMS (Six Thinking Hats, several devices, one shared room)
+   ======================================================================= */
+var HATD = {
+  White:  ["⚪", "Facts and data: say what is known and what is still missing."],
+  Blue:   ["🔵", "Process: set the agenda, keep order and summarise the conclusions."],
+  Red:    ["🔴", "Feelings: share gut reactions without having to justify them."],
+  Black:  ["⚫", "Caution: point out risks and why the idea might fail."],
+  Yellow: ["🟡", "Benefits: explain the value and the best realistic outcome."],
+  Green:  ["🟢", "Creativity: propose new ideas and an alternative plan."]
+};
+var RM = { code: null, since: 0, timer: null, msgs: [] };
+function rmErr(t){ $("rm-err").textContent = t || ""; }
+function rmEnter(v){
+  RM.code = v.code; RM.since = 0; RM.msgs = [];
+  $("rm-lobby").style.display = "none"; $("rm-live").style.display = "block"; $("rm-feed").innerHTML = "";
+  $("rm-codepill").textContent = v.code; $("rm-topic").textContent = v.topic; $("gx").innerHTML = ""; rmErr("");
+  try { sessionStorage.setItem("ep_room", JSON.stringify({ code: v.code, name: ME.dn })); } catch(e){}
+  rmApply(v);
+  clearInterval(RM.timer); RM.timer = setInterval(rmPoll, 2500);
+  if (ME.rooms.indexOf(v.code) < 0){ ME.rooms.push(v.code); ME.rooms = ME.rooms.slice(-50); bumpLocal(function(s){ s.grp++; }); }
+}
+function rmApply(v){
+  var mb = $("rm-members"); mb.innerHTML = "";
+  var mine = null;
+  v.members.forEach(function(m){
+    var h = HATD[m.hat] || ["", ""];
+    mb.appendChild(el("span", "hat-chip hat-" + m.hat, h[0] + " " + m.hat + ": " + m.name + (m.host ? " (host)" : "") + (m.id === ME.uid ? " (you)" : "")));
+    if (m.id === ME.uid) mine = m;
+  });
+  if (mine) $("rm-hatnote").textContent = HATD[mine.hat][0] + " You wear the " + mine.hat + " Hat. " + HATD[mine.hat][1];
+  var feed = $("rm-feed"), near = feed.scrollHeight - feed.scrollTop - feed.clientHeight < 80;
+  (v.msgs || []).forEach(function(m){
+    RM.msgs.push(m);
+    if (m.sys){ feed.appendChild(el("div", "rm-sys", m.text)); return; }
+    var row = el("div", "rm-row"), who = el("div", "rm-who");
+    who.appendChild(el("span", "hat-chip hat-" + m.hat, (HATD[m.hat] ? HATD[m.hat][0] : "") + " " + m.hat));
+    who.appendChild(el("b", null, " " + m.name));
+    row.appendChild(who); row.appendChild(el("div", "rm-text", m.text)); feed.appendChild(row);
+  });
+  RM.since = v.total;
+  if (near) feed.scrollTop = feed.scrollHeight;
+}
+function rmPoll(){
+  if (!RM.code || document.hidden) return;
+  api("/room/state?code=" + RM.code + "&since=" + RM.since, null, "GET").then(rmApply)
+    .catch(function(e){ if (e && e.code == "http_404") rmLeave("This room has expired or was closed."); });
+}
+function rmLeave(note){
+  clearInterval(RM.timer); RM.code = null;
+  try { sessionStorage.removeItem("ep_room"); } catch(e){}
+  $("rm-live").style.display = "none"; $("rm-lobby").style.display = "block"; $("rm-msg").textContent = note || "";
+}
+function rmName(){
+  var n = $("rm-name").value.trim() || ME.name || ME.dn || "";
+  if (n.length < 2){ $("rm-msg").textContent = "Enter your display name first."; return null; }
+  $("rm-name").value = n; ME.dn = n; saveMe(); return n;
+}
+$("rm-name").value = ME.name || ME.dn || "";
+$("rm-create").onclick = function(){
+  var n = rmName(); if (!n) return;
+  var t = $("gt").value.trim();
+  if (t.length < 3){ $("rm-msg").textContent = "Enter a topic to debate."; return; }
+  $("rm-msg").textContent = "Creating room…";
+  api("/room/create", { uid: ME.uid, token: ME.token, name: n, topic: t }).then(function(v){ $("rm-msg").textContent = ""; rmEnter(v); })
+    .catch(function(e){ $("rm-msg").textContent = err(e); });
+};
+$("rm-join").onclick = function(){
+  var n = rmName(); if (!n) return;
+  var c = $("rm-code").value.trim().toUpperCase();
+  if (c.length != 5){ $("rm-msg").textContent = "Room codes have 5 characters."; return; }
+  $("rm-msg").textContent = "Joining…";
+  api("/room/join", { uid: ME.uid, token: ME.token, code: c, name: n }).then(function(v){ $("rm-msg").textContent = ""; rmEnter(v); })
+    .catch(function(e){ $("rm-msg").textContent = err(e); });
+};
+function rmSend(){
+  var t = $("rm-input").value.trim(); if (!t || !RM.code) return;
+  $("rm-input").value = "";
+  api("/room/say", { uid: ME.uid, token: ME.token, code: RM.code, text: t }).then(function(){ rmErr(""); rmPoll(); })
+    .catch(function(e){ rmErr(err(e)); $("rm-input").value = t; });
+}
+$("rm-send").onclick = rmSend;
+$("rm-input").onkeydown = function(e){ if (e.key === "Enter" && !e.shiftKey){ e.preventDefault(); rmSend(); } };
+$("rm-rotate").onclick = function(){
+  api("/room/rotate", { uid: ME.uid, token: ME.token, code: RM.code }).then(function(){ rmErr(""); rmPoll(); }).catch(function(e){ rmErr(err(e)); });
+};
+$("rm-leave").onclick = function(){ rmLeave(""); };
+$("rm-copy").onclick = function(){ try { navigator.clipboard.writeText(RM.code); rmErr("Room code copied. Share it with your group."); } catch(e){ rmErr("Room code: " + RM.code); } };
+$("rm-review").onclick = async function(){
+  var o = $("gx");
+  var said = RM.msgs.filter(function(m){ return !m.sys; });
+  if (said.length < 3){ o.className = "box"; o.textContent = "Discuss for a while first (at least 3 messages)."; return; }
   if (need(o)) return;
-  o.className = "box";
-  o.textContent = "Setting up role criteria...";
+  o.className = "box"; o.textContent = "Reviewing the discussion...";
+  var tr = said.slice(-40).map(function(m){ return m.hat + " Hat (" + m.name + "): " + m.text; }).join("\n");
   try {
-    var x = await ai("You are an educational moderator. For topic: '" + t + "', create a 3-way debate scenario applying de Bono's Six Thinking Hats. Assign: 1. Student A (Yellow Hat - Optimist/Value), 2. Student B (Black Hat - Risk/Skeptic), 3. Student C (Blue Hat - Process & Synthesis). Write exactly 1 focused challenge for each. Plain text, max 130 words.", { cache: false });
+    var x = await ai("A student group is applying de Bono's Six Thinking Hats to the topic: '" + $("rm-topic").textContent + "'. Transcript:\n" + tr +
+      "\n\nGive: 1. which hats were used well, 2. which hat's perspective is missing or weak, 3. the strongest objection raised, 4. one synthesis sentence the Blue Hat could write. Plain text, under 150 words.", { cache: false, kind: "review" });
     o.textContent = x.text;
-    $("gw").style.display = "block";
-    updateActiveStats(function(s, u){
-      s.grp++;
-      u.debates = (u.debates || 0) + 1;
-    });
-    renderLeaderboard();
   } catch(e){ o.textContent = err(e); }
 };
-
+var tmr = null, left = 600;
 $("ts").onclick = function(){
-  clearInterval(tmr);
-  left = 600;
+  clearInterval(tmr); left = 600;
   tmr = setInterval(function(){
-    left--;
-    $("tm").textContent = Math.floor(left / 60) + ":" + ("0" + left % 60).slice(-2);
-    if (left <= 0){ clearInterval(tmr); $("tm").textContent = "Time Complete - Document your consensus!"; }
+    left--; $("tm").textContent = Math.floor(left / 60) + ":" + ("0" + left % 60).slice(-2);
+    if (left <= 0){ clearInterval(tmr); $("tm").textContent = "Time is up"; }
   }, 1000);
 };
+try {
+  var sv = JSON.parse(sessionStorage.getItem("ep_room"));
+  if (sv && sv.code && sv.name && sv.name.length > 1){
+    $("rm-name").value = sv.name;
+    api("/room/join", { uid: ME.uid, token: ME.token, code: sv.code, name: sv.name }).then(rmEnter).catch(function(){ try { sessionStorage.removeItem("ep_room"); } catch(e){} });
+  }
+} catch(e){}
 
-$("gr").onclick = async function(){
-  var n = $("gn").value.trim(), o = $("gx");
-  if (n.length < 20){ o.textContent = "Log the debate notes before review."; return; }
-  if (need(o)) return;
-  o.className = "box";
-  o.textContent = "Evaluating collaborative rigor...";
-  try {
-    var x = await ai("Evaluate these peer debate notes on topic: '" + $("gt").value + "'. Notes: " + n + ". Highlight: 1. Strongest critical objection raised, 2. Overlooked blind spot, 3. Synthesis rating (1-5). Under 120 words, plain text.", { cache: false });
-    o.textContent = x.text;
-  } catch(e){ o.textContent = err(e); }
-};
-
-/* Peer Duel Quiz */
+/* Peer Duel */
 $("pzg").onclick = async function(){
   var t = $("pzt").value.trim(), o = $("pza");
   if (t.length < 3){ o.textContent = "Enter a scenario topic."; return; }
   if (need(o)) return;
-  o.innerHTML = "Generating dilemma...";
+  o.textContent = "Generating dilemma...";
   try {
     var v = await ai.json("Generate a critical thinking conceptual dilemma on: " + t + ". Provide a scenario where two valid perspectives conflict. Return JSON: { dilemma: string, perspectiveA: string, perspectiveB: string, coreQuestion: string }", { cache: false });
     o.innerHTML = "";
     var box = el("div", "box");
-    box.innerHTML = "<b>Dilemma:</b> " + v.dilemma + "<br><br>" +
-      "<b>Position A:</b> " + v.perspectiveA + "<br>" +
-      "<b>Position B:</b> " + v.perspectiveB + "<br><br>" +
-      "<b>Key Challenge:</b> " + v.coreQuestion;
+    box.innerHTML = "<b>Dilemma:</b> " + esc(v.dilemma) + "<br><br><b>Position A:</b> " + esc(v.perspectiveA) + "<br><b>Position B:</b> " + esc(v.perspectiveB) + "<br><br><b>Key Challenge:</b> " + esc(v.coreQuestion);
     o.appendChild(box);
   } catch(e){ o.textContent = err(e); }
 };
 
-/* Adaptive Quiz */
+/* =======================================================================
+   ADAPTIVE QUIZ: the AI now rates your written reasoning (1-5)
+   ======================================================================= */
 var Z = { lv: 2, qs: [], i: 0, sc: 0, pk: null };
 $("qg").onclick = async function(){
   var t = $("qt").value.trim(), o = $("qa");
   if (t.length < 3){ o.textContent = "Enter a topic first."; return; }
   if (need(o)) return;
-  o.textContent = "Synthesizing diagnostic questions...";
-  $("qg").disabled = true;
+  o.textContent = "Synthesizing diagnostic questions..."; $("qg").disabled = true;
   try {
     var v = await ai.json("Create 5 conceptual questions on: " + t + " (Difficulty level: " + Z.lv + " of 3). Focus on common cognitive traps and edge cases. Return JSON: [{ q: string, o: [string, string, string, string], a: number (0-3), e: string }]", { cache: false });
     if (!Array.isArray(v) || !v.length) throw { code: "bad_format" };
@@ -1271,10 +1478,8 @@ $("qg").onclick = async function(){
   } catch(e){ o.textContent = err(e); }
   $("qg").disabled = false;
 };
-
 function qr(){
-  var o = $("qa");
-  o.innerHTML = "";
+  var o = $("qa"); o.innerHTML = "";
   if (Z.i >= Z.qs.length){
     var up = Z.sc >= 4, dn = Z.sc <= 2;
     Z.lv = up ? Math.min(3, Z.lv + 1) : dn ? Math.max(1, Z.lv - 1) : Z.lv;
@@ -1287,214 +1492,142 @@ function qr(){
   var ob = el("div");
   q.o.forEach(function(optText, idx){
     var b = el("button", "opt-btn", optText);
-    b.onclick = function(){
-      Z.pk = idx;
-      ob.querySelectorAll(".opt-btn").forEach(function(x){ x.classList.remove("sel"); });
-      b.classList.add("sel");
-      wx.style.display = "block";
-    };
+    b.onclick = function(){ Z.pk = idx; ob.querySelectorAll(".opt-btn").forEach(function(x){ x.classList.remove("sel"); }); b.classList.add("sel"); wx.style.display = "block"; };
     ob.appendChild(b);
   });
   o.appendChild(ob);
-
-  var wx = el("div");
-  wx.style.display = "none";
-  var ta = el("textarea");
-  ta.placeholder = "Explain your reasoning (Why does this make more logical sense than the alternatives?)";
-  var sb = el("button", "btn", "Verify Answer");
-  sb.disabled = true;
-  ta.oninput = function(){ sb.disabled = ta.value.trim().length < 15; };
-  sb.onclick = function(){
-    var ok = Z.pk == q.a;
-    updateActiveStats(function(s){
-      s.quiz++;
-      if (ok){ s.ok++; Z.sc++; }
-    });
+  var wx = el("div"); wx.style.display = "none";
+  var ta = el("textarea"); ta.placeholder = "Explain your reasoning in a few words or more: why is this option better than the others? The AI will rate your reasoning.";
+  var sb = el("button", "btn", "Verify Answer"); sb.disabled = true;
+  ta.oninput = function(){ var t = ta.value.trim(); sb.disabled = !(t.length >= 20 && t.split(/\s+/).length >= 4); };
+  sb.onclick = async function(){
+    var ok = Z.pk == q.a; if (ok) Z.sc++;
     sb.disabled = true; ta.disabled = true;
-    ob.querySelectorAll(".opt-btn").forEach(function(b, i){
-      b.disabled = true;
-      if (i == q.a) b.classList.add("ok");
-      else if (i == Z.pk) b.classList.add("no");
-    });
+    ob.querySelectorAll(".opt-btn").forEach(function(b, i){ b.disabled = true; if (i == q.a) b.classList.add("ok"); else if (i == Z.pk) b.classList.add("no"); });
     o.appendChild(el("div", "box", (ok ? "✓ Sound Deduction: " : "✗ Premise Flaw: ") + q.e));
-    var nx = el("button", "btn", Z.i + 1 < Z.qs.length ? "Next Challenge" : "Complete Round");
-    nx.style.marginTop = "8px";
-    nx.onclick = function(){ Z.i++; qr(); };
-    o.appendChild(nx);
+    var fb = el("div", "box", "Checking the quality of your reasoning...");
+    o.appendChild(fb);
+    var nx = el("button", "btn", Z.i + 1 < Z.qs.length ? "Next Challenge" : "Complete Round"); nx.style.marginTop = "8px";
+    nx.onclick = function(){ Z.i++; qr(); }; o.appendChild(nx);
+    bumpLocal(function(s){ s.quiz++; if (ok) s.ok++; });
+    try {
+      var v = await ai.json("A student answered a conceptual question and wrote their reasoning.\nQuestion: " + q.q + "\nOptions: " + q.o.join(" | ") + "\nCorrect option: " + q.o[q.a] + "\nStudent chose: " + q.o[Z.pk] +
+        "\nStudent reasoning: " + ta.value + "\n\nRate ONLY the quality of the reasoning, not whether the chosen option was right. 1 = no real reasoning, a guess or gibberish; 3 = partly logical; 5 = clear, logical and compares alternatives. Return JSON: {\"rating\": number from 1 to 5, \"feedback\": \"one or two sentences: what was strong and what was missing\"}", { cache: false, kind: "quiz" });
+      var rt = Math.round(+v.rating);
+      if (!(rt >= 1 && rt <= 5)) throw { code: "bad_format" };
+      fb.textContent = "Reasoning quality: " + rt + "/5. " + String(v.feedback || "");
+      ME.hist.push({ t: Date.now(), r: rt }); ME.hist = ME.hist.slice(-200);
+      bumpLocal(function(s){ s.rs += rt; s.rn++; });
+    } catch(e){ fb.textContent = "Reasoning feedback is unavailable right now. Your answer was still recorded."; }
   };
-  wx.appendChild(ta); wx.appendChild(sb);
-  o.appendChild(wx);
+  wx.appendChild(ta); wx.appendChild(sb); o.appendChild(wx);
 }
 
 /* =======================================================================
-   PYQ & TEST PAPERS: UNIVERSAL AI GENERATOR FOR ANY SUBJECT
+   EXAM PRACTICE
    ======================================================================= */
 var currentPYQList = [];
-
 function renderPYQ(list){
-  var o = $("pl"); 
-  o.innerHTML = "";
-  if (!list.length) {
-    o.innerHTML = "<div class='mu' style='padding:12px; text-align:center;'>No questions currently loaded. Enter a subject above to generate past exam questions.</div>";
-    return;
-  }
+  var o = $("pl"); o.innerHTML = "";
+  if (!list.length){ o.innerHTML = "<div class='mu' style='padding:12px; text-align:center;'>No questions currently loaded. Enter a subject above to generate practice questions.</div>"; return; }
   list.forEach(function(x, idx){
     var d = el("div", "box");
     d.appendChild(el("span", "pill", x[1] + " Marks"));
-    var qTitle = el("p", null, "Q" + (idx + 1) + ". " + x[0]);
-    qTitle.style.fontWeight = "600";
-    qTitle.style.margin = "8px 0";
-    d.appendChild(qTitle);
-    
-    var ta = el("textarea"); 
-    ta.placeholder = "Draft structured university-style response...";
-    var b = el("button", "btn alt", "Submit to AI Evaluator");
-    b.style.marginTop = "8px";
+    var qTitle = el("p", null, "Q" + (idx + 1) + ". " + x[0]); qTitle.style.fontWeight = "600"; qTitle.style.margin = "8px 0"; d.appendChild(qTitle);
+    var ta = el("textarea"); ta.placeholder = "Draft structured university-style response...";
+    var b = el("button", "btn alt", "Submit to AI Evaluator"); b.style.marginTop = "8px";
     var out = el("div");
-    
     b.onclick = async function(){
-      if (ta.value.trim().length < 20){ 
-        out.className = "box";
-        out.textContent = "Answer too brief for evaluation. Write at least a couple of sentences."; 
-        return; 
-      }
+      if (ta.value.trim().length < 20){ out.className = "box"; out.textContent = "Answer too brief for evaluation. Write at least a couple of sentences."; return; }
       if (need(out)) return;
-      out.className = "box";
-      out.textContent = "Scoring against strict academic rubric...";
-      b.disabled = true;
+      out.className = "box"; out.textContent = "Scoring against strict academic rubric..."; b.disabled = true;
       try {
-        var r = await ai("You are a strict university examiner. Question (" + x[1] + " marks): " + x[0] + 
-          "\nExpected Key Points: " + (x[2] || "Assess conceptual rigor, accuracy, and structural reasoning") + 
-          "\nStudent Answer: " + ta.value + 
-          "\n\nGive: Score X/" + x[1] + ". Then: 1. Key marks earned, 2. Conceptual gaps or missed points, 3. One concrete tip to gain full marks. Plain text, under 110 words.", { cache: false });
+        var r = await ai("You are a strict university examiner. Question (" + x[1] + " marks): " + x[0] +
+          "\nExpected Key Points: " + (x[2] || "Assess conceptual rigor, accuracy, and structural reasoning") + "\nStudent Answer: " + ta.value +
+          "\n\nGive: Score X/" + x[1] + ". Then: 1. Key marks earned, 2. Conceptual gaps or missed points, 3. One concrete tip to gain full marks. Plain text, under 110 words.", { cache: false, kind: "pyq" });
         out.textContent = r.text;
-        updateActiveStats(function(s){ s.pyq++; });
+        bumpLocal(function(s){ s.pyq++; });
       } catch(e){ out.textContent = err(e); }
       b.disabled = false;
     };
-    d.appendChild(ta); 
-    d.appendChild(b); 
-    d.appendChild(out);
-    o.appendChild(d);
+    d.appendChild(ta); d.appendChild(b); d.appendChild(out); o.appendChild(d);
   });
 }
-
-async function generateUniversalPYQ(subject, type) {
+async function generateUniversalPYQ(subject, type){
   var o = $("pl");
-  if (!subject || subject.length < 2) {
-    o.innerHTML = "<div class='box' style='border-color:var(--warn)'>Please enter a subject name first (e.g. Critical Thinking, Operating Systems, Computer Networks).</div>";
-    return;
-  }
+  if (!subject || subject.length < 2){ o.innerHTML = "<div class='box' style='border-color:var(--warn)'>Please enter a subject name first (e.g. Critical Thinking, Operating Systems, Computer Networks).</div>"; return; }
   if (need(o)) return;
-  
-  var btn = $("pyq-gen-btn");
-  btn.disabled = true;
-  o.innerHTML = "<div class='box'>Synthesizing authentic " + type.toUpperCase() + " exam paper for <b>" + subject + "</b> with university marking schemes...</div>";
-  
+  var btn = $("pyq-gen-btn"); btn.disabled = true;
+  o.innerHTML = "<div class='box'>Generating " + esc(type.toUpperCase()) + " practice questions for <b>" + esc(subject) + "</b>...</div>";
   var prompt = "";
-  if (type === "mock") {
-    prompt = "Create a complete mock university exam paper for the subject: '" + subject + "'. Provide 6 different questions across units, mixing 2, 5, and 10 mark questions. Return only a valid JSON array of arrays: [ [question string, marks number, short expected answer key points string], ... ]";
-  } else if (type === "case") {
-    prompt = "Create 3 critical-thinking and scenario-based case questions for the subject: '" + subject + "' requiring problem analysis (mix of 5 and 10 marks). Return only a valid JSON array of arrays: [ [question string, marks number, expected solution points string], ... ]";
-  } else {
-    prompt = "Create 5 past-year university examination questions (PYQs) for the subject: '" + subject + "' with appropriate marks (e.g., 5 or 10 marks) covering core concepts. Return only a valid JSON array of arrays: [ [question string, marks number, expected key points string], ... ]";
-  }
-  
+  if (type === "mock") prompt = "Create a complete mock university exam paper for the subject: '" + subject + "'. Provide 6 different questions across units, mixing 2, 5, and 10 mark questions. Return only a valid JSON array of arrays: [ [question string, marks number, short expected answer key points string], ... ]";
+  else if (type === "case") prompt = "Create 3 critical-thinking and scenario-based case questions for the subject: '" + subject + "' requiring problem analysis (mix of 5 and 10 marks). Return only a valid JSON array of arrays: [ [question string, marks number, expected solution points string], ... ]";
+  else prompt = "Create 5 university-style practice questions for the subject: '" + subject + "' with appropriate marks (e.g., 5 or 10 marks) covering core concepts. Return only a valid JSON array of arrays: [ [question string, marks number, expected key points string], ... ]";
   try {
     var v = await ai.json(prompt, { cache: false });
     if (!Array.isArray(v) || !v.length) throw { code: "bad_format" };
-    currentPYQList = v;
-    renderPYQ(currentPYQList);
-  } catch(e) {
-    o.innerHTML = "<div class='box' style='border-color:var(--no)'>" + err(e) + "</div>";
-  }
+    currentPYQList = v; renderPYQ(currentPYQList);
+  } catch(e){ o.innerHTML = "<div class='box' style='border-color:var(--no)'>" + esc(err(e)) + "</div>"; }
   btn.disabled = false;
 }
-
-$("pyq-gen-btn").onclick = function(){
-  var s = $("pyq-subject").value.trim();
-  var t = $("pyq-type").value;
-  generateUniversalPYQ(s, t);
-};
-
-$("pyq-quick-ct").onclick = function(){
-  $("pyq-subject").value = "Critical Thinking (Six Thinking Hats & Cognitive Bias)";
-  $("pyq-type").value = "case";
-  generateUniversalPYQ($("pyq-subject").value, "case");
-};
-
-$("pyq-quick-cs").onclick = function(){
-  $("pyq-subject").value = "Operating Systems (Deadlock, Concurrency & Virtual Memory)";
-  $("pyq-type").value = "pyq";
-  generateUniversalPYQ($("pyq-subject").value, "pyq");
-};
-
+$("pyq-gen-btn").onclick = function(){ generateUniversalPYQ($("pyq-subject").value.trim(), $("pyq-type").value); };
+$("pyq-quick-ct").onclick = function(){ $("pyq-subject").value = "Critical Thinking (Six Thinking Hats & Cognitive Bias)"; $("pyq-type").value = "case"; generateUniversalPYQ($("pyq-subject").value, "case"); };
+$("pyq-quick-cs").onclick = function(){ $("pyq-subject").value = "Operating Systems (Deadlock, Concurrency & Virtual Memory)"; $("pyq-type").value = "pyq"; generateUniversalPYQ($("pyq-subject").value, "pyq"); };
 $("pa").onclick = function(){
-  var q = $("pc").value.trim();
-  var m = parseInt($("pn").value, 10) || 5;
+  var q = $("pc").value.trim(), m = parseInt($("pn").value, 10) || 5;
   if (q.length < 6) return;
-  currentPYQList.unshift([q, m, "User submitted custom question."]);
-  renderPYQ(currentPYQList);
-  $("pc").value = "";
+  currentPYQList.unshift([q, m, "User submitted custom question."]); renderPYQ(currentPYQList); $("pc").value = "";
 };
-
-// Initial default questions
 currentPYQList = [
-  ["Explain how Edward de Bono's Six Thinking Hats technique eliminates adversarial ego clashing in group decision making.", 5, "Parallel thinking; ego separation; role wearing; structured exploration"],
-  ["Discuss the cognitive dangers of premature AI tool reliance in university students. How can socratic friction protect deep understanding?", 10, "Passive cognitive offloading; illusion of competence; loss of synthesis; requirement of productive friction"]
+  ["Explain how Edward de Bono's Six Thinking Hats technique reduces adversarial ego clashes in group decision making.", 5, "Parallel thinking; ego separation; role wearing; structured exploration"],
+  ["Discuss the cognitive dangers of premature AI tool reliance in university students. How can productive friction (hints before answers) protect deep understanding?", 10, "Cognitive offloading; illusion of competence; loss of synthesis; productive friction"]
 ];
 renderPYQ(currentPYQList);
 
-/* Dependency Monitor */
-function score(){
-  var s = getActiveStats();
-  var w = (s.g || 0) * 1.5 + (s.quiz || 0) * 1.2 + (s.pyq || 0) * 2 + (s.grp || 0) * 2.5;
-  var pen = (s.f || 0) * 2.0;
-  var tot = w + pen;
-  return tot > 0 ? Math.min(100, Math.max(10, Math.round((w / tot) * 100))) : 85;
-}
-
+/* =======================================================================
+   MONITOR: honest heuristic + reasoning evidence
+   ======================================================================= */
 function mon(){
-  var s = getActiveStats();
-  var c = score();
+  var s = ME.stats, c = calc(s), none = c.ratio === null;
+  var avg = s.rn > 0 ? (s.rs / s.rn).toFixed(1) + "/5" : "–";
   $("st").innerHTML = [
-    ["Guided Inquiries", s.g || 0],
-    ["Direct Answer Shortcuts", s.f || 0],
-    ["Active Quiz Rationale", s.quiz || 0],
-    ["Exam Answers Evaluated", s.pyq || 0],
-    ["Peer Rounds Hosted", s.grp || 0]
+    ["Guided Inquiries", s.g || 0], ["Direct Answer Shortcuts", s.f || 0], ["Quiz Answers", s.quiz || 0],
+    ["Avg Reasoning Rating", avg], ["Exam Answers Marked", s.pyq || 0], ["Peer Rooms", s.grp || 0]
   ].map(function(x){ return '<div class="stat"><b>' + x[1] + '</b>' + x[0] + '</div>'; }).join("");
-
-  $("sc").style.width = c + "%";
-  $("sm").textContent = "Autonomy Score: " + c + "/100. " + 
-    (c >= 75 ? "High cognitive ownership! You use AI to challenge yourself." : 
-     c >= 50 ? "Balanced. Aim to lean more on Guided hints to build intuition." : 
-     "Passive reliance risk detected. Shift away from Direct Answer mode.");
+  $("sc").style.width = (none ? 0 : c.ratio) + "%";
+  $("sm").textContent = none ? "No activity yet. Ask a guided question or take a quiz to see your ratio."
+    : "Autonomy ratio " + c.ratio + "% and " + c.pts + " points. " + (c.ratio >= 75 ? "Most of your AI use is hints and effortful practice." : c.ratio >= 50 ? "Balanced. Try Guided mode more often." : "Many direct answers. Try attempting first, then ask.");
+  renderTrend();
 }
-
+function mean(a){ return a.reduce(function(t, x){ return t + x.r; }, 0) / a.length; }
+function renderTrend(){
+  var h = ME.hist, box = $("tr-bars"); box.innerHTML = "";
+  h.slice(-20).forEach(function(x){ var b = el("i"); b.style.height = (x.r / 5 * 100) + "%"; b.title = "Reasoning rating " + x.r + "/5"; box.appendChild(b); });
+  var msg;
+  if (h.length < 10) msg = "Rated quiz answers so far: " + h.length + ". Answer at least 10 quiz questions with written reasoning to see whether your reasoning ratings change over time.";
+  else {
+    var n = Math.min(5, Math.floor(h.length / 2)), a = mean(h.slice(0, n)), b2 = mean(h.slice(-n)), d = b2 - a;
+    msg = "Average reasoning rating: first " + n + " answers " + a.toFixed(1) + "/5, latest " + n + " answers " + b2.toFixed(1) + "/5 (" + (d >= 0 ? "+" : "") + d.toFixed(1) + "). " +
+      (Math.abs(d) < 0.3 ? "No clear change yet." : d > 0 ? "Your reasoning ratings are rising." : "Your reasoning ratings are falling.");
+  }
+  $("tr-msg").textContent = msg;
+}
 $("rs").onclick = function(){
-  updateActiveStats(function(s, u){
-    s.q = 0; s.g = 0; s.f = 0; s.quiz = 0; s.ok = 0; s.pyq = 0; s.grp = 0;
-    u.debates = 0;
-  });
-  mon();
-  renderLeaderboard();
+  if (!confirm("Reset your local metrics and reasoning history? Leaderboard scores are removed separately by deleting your profile.")) return;
+  ME.stats = blankStats(); ME.hist = []; ME.rooms = []; saveMe(); mon();
 };
-
 $("ex").onclick = function(){
-  var s = getActiveStats();
-  var cur = getCurrentUser();
-  var users = getAllUsers();
-  var name = (cur && users[cur]) ? users[cur].name : "Student";
-  var t = "ExamPilot Academic Rigor Report for " + name + ": " + (s.g||0) + " Guided Inquiries, " + (s.quiz||0) + " Quizzes defended, " + (s.grp||0) + " Peer Sessions. Autonomy Score: " + score() + "/100.";
+  var s = ME.stats, c = calc(s);
+  var t = "ExamPilot activity summary" + (ME.name ? " for " + ME.name : "") + ": " + s.g + " guided inquiries, " + s.f + " direct answers, " + s.quiz + " quiz answers with written reasoning (average AI-rated reasoning " + (s.rn ? (s.rs / s.rn).toFixed(1) + "/5" : "n/a") + "), " +
+    s.pyq + " exam answers marked, " + s.grp + " peer rooms. Autonomy ratio (heuristic): " + (c.ratio === null ? "n/a" : c.ratio + "%") + ". This is self-tracked usage data and an AI estimate, not a measure of learning.";
   try { navigator.clipboard.writeText(t); $("em").textContent = "Copied to clipboard."; } catch(e){ $("em").textContent = t; }
 };
 
-// Initial setup
+/* Start-up */
 updateAuthUI();
-renderLeaderboard();
 mon();
+renderLeaderboard();
+
 </script>
 </body>
 </html>
-
